@@ -7,12 +7,12 @@ var app = new Vue( {
         errorBaseSalary: false,
         errorExtraHours: false,
         overtimePrice: 25000,
+        totalExtraHours: 0,
         dataSecretarys: []
     },
     methods: {
         addSecretary(){
            this.fieldValidations() ? this.error : this.createSecretary() 
-            
         },
         createSecretary(){
             this.dataSecretarys.push({
@@ -28,8 +28,15 @@ var app = new Vue( {
             this.baseSalary = "",
             this.extraHours = ""
         },
+        showFormatedNumber(value){
+            function thousandSeparator(number = 0, decimalsQuantity = 2) {
+                return Number(number).toFixed(decimalsQuantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              }
+              return thousandSeparator(value)
+        },
         calculate() {
-           return this.totalPay = (this.overtimePrice * this.extraHours)
+            this.totalExtraHours = this.extraHours * ( this.overtimePrice * 1.8); 
+           return this.totalPay = this.baseSalary + this.totalExtraHours;
            console.log(this.totalPay)
         },      
         updateLocalStorage() {

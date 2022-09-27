@@ -14,52 +14,37 @@
 </head>
 <body>
     <div id="app" class="container">
-        <form class="content my-5 text-center"  @submit.prevent="addSeller">
-            <h2>Liquidación Vendedor</h2>
-            <div class="row mt-5 mb-2 mx-2">
-              <div class="col">
-                <div class="input-group mb-3">
-                  <label class="m-1" style="font-size: 19px">Salario Base</label> 
-                  <input v-model.number="baseSalary" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese salario base">
-                </div>
-                <span class="error" style="color: red" v-if="errorBaseSalary">El campo salario base debe ser un dato valido</span>
-              </div>
-              <div class="col">
-                <div class="input-group mb-3">
-                  <label class="m-1" style="font-size: 19px">Horas Extras</label>
-                  <input v-model.number="extraHours" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese horas extras">
-                </div>
-                <span class="error" style="color: red" v-if="errorExtraHours">El campo horas extras debe ser un dato valido</span>
+      <form class="content my-5 text-center" @submit.prevent="addSeller">
+        <h2>Liquidación Vendedor</h2>
+        <div class="row mt-5 mb-2 mx-2">
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="m-1" style="font-size: 19px">Salario Base</label> 
+              <input v-model.number="baseSalary" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese salario base">
             </div>
-            </div> 
-            <div class="row mt-5 mb-2 mx-2">
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <label class="m-1" style="font-size: 19px">Comisión</label> 
-                    <input v-model.number="commission" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese comisión">
-                  </div>
-                  <span class="error" style="color: red" v-if="errorCommission">El campo comisión debe ser un dato valido</span>
-                </div>
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <label class="m-1" style="font-size: 19px">Subsidio</label>
-                    <input v-model.number="benefit" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese subsidio">
-                  </div>
-                  <span class="error" style="color: red" v-if="errorBenefit">El campo subsidio debe ser un dato valido</span>
-              </div>
-              </div>            
-            <div>
-                <button class="btn btn-danger">Calcular</button>
+            <span class="error" style="color: red" v-if="errorBaseSalary">El campo salario base debe ser un dato valido</span>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="m-1" style="font-size: 19px">Total de Ventas</label> 
+              <input v-model.number="totalSales" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese comisión">
             </div>
-        </form>
+            <span class="error" style="color: red" v-if="errorTotalSales">El campo Total de ventas debe ser un dato valido</span> 
+          </div>
+        </div>           
+        <div class="row">
+           <div class="col">
+             <button class="btn btn-danger">Calcular</button>
+           </div>
+        </div>
+    </form>
         <div>
           <table class="table  mt-4">
               <thead class="bg-dark text-white">
               <tr>
                   <th scope="col">Item</th>
                   <th scope="col">Salario Base</th>
-                  <th scope="col">Horas Extras</th>
-                  <th scope="col">Comisión</th>
+                  <th scope="col">Total Venta</th>
                   <th scope="col">Subsidio</th>
                   <th scope="col">Total a Pagar</th>
                   <th scope="col">Eliminar</th>
@@ -67,12 +52,11 @@
               </thead>
               <tbody v-if="dataSellers.length">
               <tr v-for="(item,i) in dataSellers">
-                  <td  v-text="i + 1"></td>
-                  <td  v-text="item.baseSalarySel"></td>
-                  <td v-text="item.extraHourSel"></td>
-                  <td v-text="item.commissionSel"></td>
-                  <td v-text="item.benefitSel"></td>
-                  <td v-text="item.totalPaySel"></td>
+                  <td v-text="i + 1"></td>
+                  <td v-text="showFormatedNumber(item.baseSalarySel)"></td>
+                  <td v-text="showFormatedNumber(item.totalSalesSel)"></td>
+                  <td v-text="showFormatedNumber(item.transportSubsidySel)"></td>
+                  <td v-text="showFormatedNumber(item.totalPaySel)"></td>
                   <td>
                       <button type="button" class="btn btn-danger" @click ="messageDelete(item,i)">Eliminar</button>
                   </td>

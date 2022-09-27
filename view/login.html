@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="app" class="container">
-        <form class="content my-5 text-center">
+        <form class="content my-5 text-center" @submit.prevent="validateCredentials(optionPosition, pin)">
             <h2>Login</h2>
             <div class="row mt-5 mb-2 mx-2">
               <div class="col">
@@ -29,13 +29,13 @@
               <div class="col">
                 <div class="input-group mb-3">
                   <label class="m-1" style="font-size: 19px">PIN</label>
-                  <input v-model.number="pin" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese horas extras">
+                  <input v-model="pin" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese horas extras">
                 </div>
                 <span class="error" style="color: red" v-if="errorPin">El campo PIN debe ser un dato valido</span>
             </div>
             </div>           
             <div>
-                <button type="button" class="btn btn-danger" @click="validateCredentials">Iniciar Sesión</button>
+                <button class="btn btn-danger">Iniciar Sesión</button>
             </div>
         </form>
     </div>
