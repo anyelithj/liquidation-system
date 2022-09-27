@@ -14,9 +14,16 @@ new Vue({
        bonus: "",
        comission:"",
        resultLiquidation: 0,
-       consolidationLiquidations: []
+       consolidationLiquidations: [],
+       STORAGE_KEY: "setDataStorage"
     },
+    created(){
+        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]')
+      },
     methods: {
+        updateLocalStorage(){
+            return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
+          },
         message(title,timer,position,text){
             Swal.fire({
               position,
@@ -78,6 +85,7 @@ new Vue({
             comission: this.defineComission(this.comission, this.baseSalary),
             total: this.defineTotal(this.baseSalary,this.defineExtraHours(this.extraHoursQuantity),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComission(this.comission, this.baseSalary))
         })
+        this.updateLocalStorage()
         this.cleanInputs()
     }
     }
