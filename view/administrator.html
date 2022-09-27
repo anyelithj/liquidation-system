@@ -14,6 +14,8 @@
   <body>
     <div id="app" class="container">
       <h3 class="mt-4 mb-2 text-danger text-center">Editar valores según el cargo</h3>
+
+      <button @click="showData" class="btn btn-danger">show</button>
       
       <div class="row d-flex justify-content-start">
         <label  class="col-4 rounded-1 text-center " >Roles</label>
@@ -122,14 +124,6 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label ">Horas extras</label>
-            <input v-model.number="extraHoursQuantity" type="text " class="form-control">
-            <div>
-             <h6 class="error" v-if="errors.extraHoursQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
-             </div> 
-          </div>
-
-          <div class="mb-3">
             <label  class=" form-label ">Comisión</label>
             <input v-model.number="baseSalary"  type="text " class="form-control">  
             <div>
@@ -153,8 +147,7 @@
 
       <h4 v-else > Seleccione el cargo que desea modificar.</h4>
   
-      <canvas id="myChart"></canvas>
-      
+    </div>
     </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
         <script src="../js/administrator.js"></script>
