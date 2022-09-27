@@ -1,9 +1,17 @@
 new Vue({
     el: '#app',
     data: {
+       displayMessageError: "El campo 'X' debe ser un  dato valido",
        CHART_JS_REFERENCE :'myChart',
        error:false,
        errors:{
+       fullName: false,
+       identityNumber: false,
+       baseSalary: false,
+       extraHoursQuantity:false,
+       subsidy: false,
+       bonus: false,
+       comission:false,
        },
        assemblerNormalHourValue: 5000,
        fullName: "",
@@ -35,45 +43,46 @@ new Vue({
             })
     },
     validateInputs() {
-        
         error = false;
-      if (this.fullName === "") {
-        this.errors.name = true;
+      if (this.fullName === "" ) {
+        this.errors.fullName = true;
         error = true;
       } else {
-        this.errors.name = false;
+        this.errors.fullName = false;
       }
-      if (this.identityNumber === "") {
-        this.errors.lastName = true;
+      if (this.identityNumber === "" || typeof this.fullName !== 'number') {
+        this.errors.identityNumber = true;
         error = true;
       } else {
-        this.errors.lastName = false;
+        this.errors.identityNumber = false;
       }
-      if (this.baseSalary === "") {
-        this.errors.identity = true;
+      if (this.baseSalary === "" || typeof this.fullName !== 'number') {
+        this.errors.baseSalary = true;
         error = true;
       } else {
-        this.errors.identity = false;
+        this.errors.baseSalary = false;
       }
-      if (this.extraHoursQuantity === "") {
-        this.errors.position = true;
+      if (this.extraHoursQuantity === "" || typeof this.fullName !== 'number') {
+        this.errors.extraHoursQuantity = true;
         error = true;
       } else {
-        this.errors.position = false;
+        this.errors.extraHoursQuantity = false;
       }
-      if (this.subsidy === "") {
-        this.errors.age = true;
+      if (this.subsidy === "" || typeof this.fullName !== 'number') {
+        this.errors.subsidy = true;
         error = true;
       } else {
-        this.errors.age = false;
+        this.errors.subsidy = false;
       }
-      if (this.bonus == "") {
-        this.errors.sex = true;
+      if (this.bonus == "" || typeof this.fullName !== 'number') {
+        this.errors.bonus = true;
         error = true;
       } else {
-        this.errors.sex = false;
-      }if(this.comission === ""){
-        return  this.errors.age = false;
+        this.errors.bonus = false;
+      }if(this.comission === "" || typeof this.fullName !== 'number'){
+         this.errors.comission = true;
+      }else{
+        this.errors.comission = false
       }
       return error;
     },
@@ -157,7 +166,7 @@ new Vue({
                 "Se eliminó correctamente",
                 1600,
                 "center",
-                "¡Este proceso es irreversible!"
+                "¡Los cambios fueron guardados!"
               )
               this.updateLocalStorage()
             }
