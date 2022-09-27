@@ -13,33 +13,78 @@
   />
 </head>
 <body>
-    <div id="#app">
+    <div id="app" class="container">
         <form class="content my-5 text-center">
-            <h2>Vendedor</h2>
-            <div class="my-3 mx-2">
-                <label class="mx-1">salario Base:</label> 
-                <input type="text" placeholder="Ingrese salario base">
+            <h2>Liquidación Vendedor</h2>
+            <div class="row mt-5 mb-2 mx-2">
+              <div class="col">
+                <div class="input-group mb-3">
+                  <label class="m-1" style="font-size: 19px">Salario Base</label> 
+                  <input v-model.number="baseSalary" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese salario base">
+                </div>
+                <span class="error" style="color: red" v-if="errorBaseSalary">El campo salario base debe ser un dato valido</span>
+              </div>
+              <div class="col">
+                <div class="input-group mb-3">
+                  <label class="m-1" style="font-size: 19px">Horas Extras</label>
+                  <input v-model.number="extraHours" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese horas extras">
+                </div>
+                <span class="error" style="color: red" v-if="errorExtraHours">El campo horas extras debe ser un dato valido</span>
             </div>
-            <div class="my-3 mx-2">
-                <label>Horas Extras:</label>
-                <input type="text" placeholder="Ingrese horas extras">
-            </div>
-            <div class="my-3 mx-2">
-                <label>Comisión:</label>
-                <input type="text" placeholder="Ingrese comisión">
-            </div>
-            <div class="my-3 mx-2">
-                <label>Subsidio:</label>
-                <input type="text" placeholder="Ingrese subsidio">
-            </div>
+            </div> 
+            <div class="row mt-5 mb-2 mx-2">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <label class="m-1" style="font-size: 19px">Comisión</label> 
+                    <input v-model.number="commission" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese comisión">
+                  </div>
+                  <span class="error" style="color: red" v-if="errorCommission">El campo comisión debe ser un dato valido</span>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <label class="m-1" style="font-size: 19px">Subsidio</label>
+                    <input v-model.number="benefit" class="w-100 border border-1 rounded py-2 px-3" type="text" placeholder="Ingrese subsidio">
+                  </div>
+                  <span class="error" style="color: red" v-if="errorBenefit">El campo subsidio debe ser un dato valido</span>
+              </div>
+              </div>            
             <div>
-                <label>Total A Pagar</label>
-                <div></div>
-            </div>
-            <div>
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" @click="addSeller">Calcular</button>
             </div>
         </form>
+        <div>
+          <table class="table  mt-4">
+              <thead class="bg-dark text-white">
+              <tr>
+                  <th scope="col">Item</th>
+                  <th scope="col">Salario Base</th>
+                  <th scope="col">Horas Extras</th>
+                  <th scope="col">Comisión</th>
+                  <th scope="col">Subsidio</th>
+                  <th scope="col">Total a Pagar</th>
+                  <th scope="col">Eliminar</th>
+              </tr>
+              </thead>
+              <tbody v-if="dataSellers.length">
+              <tr v-for="(item,i) in dataSellers">
+                  <td  v-text="i + 1"></td>
+                  <td  v-text="item.baseSalarySel"></td>
+                  <td v-text="item.extraHourSel"></td>
+                  <td v-text="item.commissionSel"></td>
+                  <td v-text="item.benefitSel"></td>
+                  <td v-text="item.totalPaySel"></td>
+                  <td>
+                      <button type="button" class="btn btn-danger" @click ="deleteSalary(item,i)">Eliminar</button>
+                  </td>
+              </tr>
+              </tbody>
+              <tbody v-else>
+                  <tr>
+                    <td colspan="5" class="text-center justify-content-center">Tu lista de liquidación está vacía</td>
+                  </tr>
+                </tbody>
+          </table>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../js/seller.js"></script>
