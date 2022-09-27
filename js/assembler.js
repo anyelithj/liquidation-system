@@ -126,7 +126,7 @@ new Vue({
         return values.reduce((a,b) => a + b)
     },
     calculateLiquidation() {
-        this.message('¡Enhorabuena!', 2200,'center','¡Has generado la liquidación exitosamente!')
+        this.message('¡Enhorabuena!', 2500,'center','!La liquidación se ha generado exitosamente!')
         this.consolidationLiquidations.push({
             fullName: this.fullName,
             identityNumber: this.identityNumber,
@@ -164,7 +164,7 @@ new Vue({
               this.consolidationLiquidations.splice(this.consolidationLiquidations.indexOf(item), 1)
               this.message(
                 "Se eliminó correctamente",
-                1600,
+                2000,
                 "center",
                 "¡Los cambios fueron guardados!"
               )
