@@ -21,7 +21,7 @@
                 <div class="input-group mb-3">
                   <label class="m-1" style="font-size: 19px">Cargo</label> 
                   <select  v-model="optionPosition" class="form-select w-100 border border-1 rounded py-2 px-3" aria-label="Default select example">
-                    <option v-for="(item, idex) in position" v-text="item"></option>
+                    <option v-for="(item, index) in position" v-text="item"></option>
                   </select>
                 </div>
                 <span class="error" style="color: red" v-if="errorPosition">El campo cargo debe ser un dato valido</span>
