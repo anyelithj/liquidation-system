@@ -29,9 +29,25 @@ var  app = new Vue( {
             let session = this.userCredentials.filter((user)=> user.position === user && user.pin === key)
             console.log(session)
             loguedUser = [...session];
-            return loguedUser.length === 0? this.message("Oops",2200,"center","Verifique que los datos sean correctos","error"):
+            return loguedUser.length === 0 ? this.message("Oops",2200,"center","Verifique que los datos sean correctos","error"):
             this.message("¡Datos correctos!", 2200,"center","Ingreso exito", "sucess");
 
+        },
+        fieldValidations(){
+            error = false;
+            if(this.position === ""){
+                this.errorPosition = true;
+              error = true;
+            } else {
+                this.errorPosition = false;
+            }
+            if(this.pin === "") {
+                this.errorPin = true;
+                error = true;
+            } else {
+                this.errorPin = false;
+            }
+            return error;
         },
         message(title, timer, position, text, icon){
             Swal.fire({
@@ -43,19 +59,5 @@ var  app = new Vue( {
                 timer,
               });
         },
-        getErrorPosition(){
-            if(this.position === "") {
-                this.errorPosition = true;
-            } else {
-                this.errorPosition = false;
-            }
-        },
-        getErrorPin(){
-            if(this.pin === "") {
-                this.errorPin = true;
-            } else {
-                this.errorPin = false;
-            }
-        }
     }
 })
