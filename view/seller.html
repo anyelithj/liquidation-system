@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="app" class="container">
-        <form class="content my-5 text-center">
+        <form class="content my-5 text-center"  @submit.prevent="addSeller">
             <h2>Liquidación Vendedor</h2>
             <div class="row mt-5 mb-2 mx-2">
               <div class="col">
@@ -49,7 +49,7 @@
               </div>
               </div>            
             <div>
-                <button type="button" class="btn btn-danger" @click="addSeller">Calcular</button>
+                <button class="btn btn-danger">Calcular</button>
             </div>
         </form>
         <div>
@@ -80,7 +80,7 @@
               </tbody>
               <tbody v-else>
                   <tr>
-                    <td colspan="5" class="text-center justify-content-center">Tu lista de liquidación está vacía</td>
+                    <td colspan="7" class="text-center justify-content-center">Tu lista de liquidación está vacía</td>
                   </tr>
                 </tbody>
           </table>
