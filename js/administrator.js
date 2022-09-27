@@ -1,18 +1,12 @@
 new Vue({
     el: '#app',
     data: {
+       defaultRol: null,
+       wholeRoles: ['Secretario','Vendedor','Ensamblador'],
        displayMessageError: "El campo 'X' debe ser un  dato valido",
        CHART_JS_REFERENCE :'myChart',
-       error:false,
-       errors:{
-       fullName: false,
-       identityNumber: false,
-       baseSalary: false,
-       extraHoursQuantity:false,
-       subsidy: false,
-       bonus: false,
-       comission:false,
-       },
+       errors:false,
+      
        assemblerNormalHourValue: 5000,
        fullName: "",
        identityNumber: "",
@@ -22,7 +16,7 @@ new Vue({
        bonus: "",
        comission:"",
        resultLiquidation: 0,
-       consolidationLiquidations: [],
+       adminData: [],
        STORAGE_KEY: "setDataStorage"
     },
     created(){
@@ -42,6 +36,7 @@ new Vue({
               timer
             })
     },
+    
     validateInputs() {
         error = false;
       if (this.fullName === "" ) {
@@ -50,7 +45,7 @@ new Vue({
       } else {
         this.errors.fullName = false;
       }
-      if (this.identityNumber === "" ||  this.fullName === 'number') {
+      if (this.identityNumber === "" || typeof this.fullName !== 'number') {
         this.errors.identityNumber = true;
         error = true;
       } else {
@@ -126,21 +121,17 @@ new Vue({
         return values.reduce((a,b) => a + b)
     },
     calculateLiquidation() {
-        this.message('¡Enhorabuena!', 2500,'center','!La liquidación se ha generado exitosamente!')
-        this.consolidationLiquidations.push({
-            fullName: this.fullName,
-            identityNumber: this.identityNumber,
-            baseSalary: this.baseSalary,
-            extraHoursQuantity: this.defineExtraHours(this.extraHoursQuantity),
-            subsidy:this.subsidy,
-            bonus: this.defineBonusPerChild(this.bonus),
-            comission: this.defineComission(this.comission, this.baseSalary),
-            total: this.defineTotal(this.baseSalary,this.defineExtraHours(this.extraHoursQuantity),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComission(this.comission, this.baseSalary))
-        })
-        this.updateLocalStorage()
-        this.cleanInputs()
+      return console.log(this.defaultRol)
     },
-    
+    message(title,timer,position,text){
+        Swal.fire({
+          position,
+          text,
+          icon: "success",
+          title,
+          showConfirmButton: false,
+          timer
+        })},
     deleteAlert(item) {
         Swal.fire({
             title: "¿Está seguro de eliminar?",
