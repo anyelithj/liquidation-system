@@ -11,15 +11,13 @@ var app = new Vue( {
         errorCommission: false,
         errorBenefit: false,
         overtimePrice: 38000,
-        dataSellers: [],
-        dataSellerStorangs: []
+        dataSellers: []
     },
     methods: {
         addSeller(){
-            this.getErrorBaseSalary()
-            this.getErrorExtraHours()
-            this.getErrorComision()
-            this.getErrorBenefit()
+          this.fieldValidations() ? this.error : this.createrSeller()  
+        },
+        createrSeller() {
             this.dataSellers.push({
                 baseSalarySel: this.baseSalary,
                 extraHourSel: this.extraHours,
@@ -44,33 +42,65 @@ var app = new Vue( {
         updateLocalStorage() {
             localStorage.setItem("dataStorang", JSON.stringify(this.dataSellers))
         },
-        getErrorBaseSalary(){
-            if(this.baseSalary === ""){
-                this.errorBaseSalary = true;
+        fieldValidations(){
+            error = false;
+            if(this.baseSalary === "" || this.baseSalary <= 0 || typeof this.baseSalary !== "number"){
+              this.errorBaseSalary = true;
+              error = true;
             } else {
-                this.errorBaseSalary = false;
+              this.errorBaseSalary = false;
             }
-        },
-        getErrorExtraHours(){
-            if(this.extraHours === "") {
+            if(this.extraHours === "" || this.extraHours <= 0 || typeof this.extraHours !== "number") {
                 this.errorExtraHours = true;
+                error = true;
             } else {
                 this.errorExtraHours = false;
             }
-        },
-        getErrorComision(){
-            if(this.commission === "") {
+            if(this.commission === "" || this.commission <= 0 || typeof this.commission !== "number") {
                 this.errorCommission = true;
+                error = true;
             } else {
                 this.errorCommission = false;
             }
-        },
-        getErrorBenefit() {
-            if(this.benefit === "") {
+            if(this.benefit === "" || this.benefit <= 0 || typeof this.benefit !== "number") {
                 this.errorBenefit = true;
+                error = true;
             } else {
                 this.errorBenefit = false;
             }
+            return error;
+        },
+        message(title,timer,position,text){
+            Swal.fire({
+              position,
+              text,
+              icon: "success",
+              title,
+              showConfirmButton: false,
+              timer
+        })},
+        messageDelete(index) {
+            Swal.fire({
+                title: "¿Está seguro de eliminar?",
+                text: "¡Este proceso es irreversible!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "SI",
+                cancelButtonText: "NO",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.dataSellers.splice(index,1);
+                  this.message(
+                    "Se eliminó correctamente",
+                    3000,
+                    "center",
+                    "¡Los cambios fueron guardados!"
+                  );
+                  this.updateLocalStorage();
+                }
+              });
         }
     },
     created() {
