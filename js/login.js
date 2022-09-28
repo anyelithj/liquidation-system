@@ -14,7 +14,6 @@ var app = new Vue({
     ],
     errorPosition: false,
     errorPin: false,
-    panel: window.location.href = '../view/menu.html'
   },
   methods: {
     clearForm() {
@@ -31,22 +30,18 @@ var app = new Vue({
       );
       console.log(session);
       loguedUser = [...session];
-      return loguedUser.length === 0
-        ? this.message(
-            "Oops",
-            2200,
+      loguedUser.length === 0? this.message( "Oops", 3200,"center","Verifique que los datos sean correctos","error"):this.Session();
+      return this.clearForm();
+    },
+    Session(){
+          this.message(
+            "¡Datos correctos!",
+            3200,
             "center",
-            "Verifique que los datos sean correctos",
-            "error"
-          )
-        : this.panel
-        // this.message(
-        //     "¡Datos correctos!",
-        //     2200,
-        //     "center",
-        //     "Ingreso exito",
-        //     "success"
-        //   );
+            "Ingreso exito",
+            "success"
+          );
+          window.location.href = '../view/menu.html'
     },
     fieldValidations() {
       error = false;

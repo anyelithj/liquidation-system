@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="app" class="container">
-        <form class="content my-5 text-center" @submit.prevent="validateCredentials(optionPosition, pin)">
+        <form class="content my-5 text-center">
             <h2>Login</h2>
             <div class="row mt-5 mb-2 mx-2">
               <div class="col">
@@ -34,8 +34,8 @@
                 <span class="error" style="color: red" v-if="errorPin">El campo PIN debe ser un dato valido</span>
             </div>
             </div>           
-            <div>
-                <button class="btn btn-danger">Iniciar Sesión</button>
+            <div class="btn btn-danger">
+                <a @click="validateCredentials(optionPosition, pin)">Iniciar Sesión</a>
             </div>
         </form>
     </div>
