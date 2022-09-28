@@ -47,7 +47,7 @@ new Vue({
        SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
        SELLER_STORAGE_KEY: "setSellerDataStorage",
        ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
-       PROBLEMATICA_KEY: "setStorage"
+       PROBLEMATICA_KEY: "setStoragee"
     },
     created(){
         this.adminData = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]')
