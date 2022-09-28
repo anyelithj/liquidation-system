@@ -16,21 +16,24 @@ new Vue({
        resultLiquidation: 0, 
        adminData : ['Problematica numero 2'],
        adminPrivileges: [
-       {
-        rol: 'Secretario',
-        values: {
-          baseSalary: 2500000,
-          extraHours: (hours) => hours * (this.assemblerNormalHourValue * 1.8)
-        }
-       },
+        {
+          rol: 'Secretario',
+          values: {
+            baseSalary: (inputValue=2500000) => inputValue,
+            hourPrice: ()=> console.log(2500000/160),
+            extraHours: (hours,percent=1.8) => console.log(hours * (178571429 * percent))
+          }
+         },
        {
         rol: 'Vendedor',
         values: {
-          baseSalary: 2500000,
+          baseSalary: (inputValue=3000000) => inputValue,
           comission: function(inputValue) {
-            if(inputValue > 5000000) {
-              return 
-            }
+            if(inputValue > 5000000 && inputValue <= 10000000) {
+              return baseSalary * .10
+            }else if(inputValue < 10000000) {
+              return baseSalary * .20
+            }return 0
           } ,
           subsidy: 80000
         }
@@ -38,8 +41,28 @@ new Vue({
        {
         rol: 'Ensamblador',
         values: {
-          baseSalary: 2500000,
-          extraHours: (hours) => hours * (this.assemblerNormalHourValue * 2.2)
+          baseSalary: (inputValue=2800000) => inputValue,
+          hourPrice: ()=> baseSalary/160,
+          extraHours: (hours) => hours * (hourPrice * 2.2),
+          subsidy: (inputValue) => inputValue,
+          sonBonus: (num) => {
+            if(num === 1){
+              return 80000
+          }else if(num > 1){
+              return num * 60000
+          }return  0
+          },
+          comission: (quantity, salary) => {
+            if(quantity > 1000 && quantity < 1700){
+                return  salary * .10
+            }else if(quantity > 1700 && quantity < 2000){
+                return  salary * .15
+            }else  if(quantity > 2000 && quantity < 3000){
+                return salary * .20
+            }else  if(quantity > 3000){
+                return  salary * .30
+            }else  {return 0}
+        }
         }
        }
        ],
@@ -47,7 +70,14 @@ new Vue({
        SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
        SELLER_STORAGE_KEY: "setSellerDataStorage",
        ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
-       PROBLEMATICA_KEY: "setStoragee"
+       PROBLEMATICA_KEY: "setStoragee",
+       data: {
+        values:{
+          a:5,
+          b:10
+        },
+        total:() => this.data.values.a * 2
+       }
     },
     created(){
         this.adminData = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]')
@@ -55,6 +85,9 @@ new Vue({
     methods: {
       showData (){
         console.log(this.adminData);
+      },
+      prueba(){
+        return console.log(this.data.total());
       },
         updateLocalStorage(){
             return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
