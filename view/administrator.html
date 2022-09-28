@@ -15,7 +15,7 @@
     <div id="app" class="container">
       <h3 class="mt-4 mb-2 text-danger text-center">Editar valores según el cargo</h3>
 
-      <button @click="prueba" class="btn btn-danger">update</button>
+      <button @click="showData" class="btn btn-danger">update</button>
       
       <div class="row d-flex justify-content-start">
         <label  class="col-4 rounded-1 text-center " >Roles</label>
@@ -29,56 +29,41 @@
             class="rounded-4 text-center"
           ></option>
         </select>
-        <span class="error text-center" style="color: red" v-if="errors"
+        <span class="error text-center" style="color: red" v-if="errors.selectOptions"
           >Seleccione una opción valida.</span
         >
       </div>
      
 <div class="container">
       <form class="mt-4" v-if="defaultRol === 'Ensamblador' "
-      @submit.prevent="calculateLiquidation"
+      @submit.prevent=""
       >
         <fieldset >
                <h5  >Ensamblador</h5>
           <div class="mb-3">
             <label  class=" form-label ">Salario base</label>
-            <input v-model.number="baseSalary"  type="text " class="form-control">  
+            <input v-model.number="inputRoles.assembler.baseSalary"  type="text " class="form-control">  
             <div>
-            <h6 class="error" v-if="errors.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
+            <h6 class="error" v-if="errors.assembler.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
           </div>
 
           <div class="mb-3">
-            <label class="form-label ">Horas extras</label>
-            <input v-model.number="extraHoursQuantity" type="text " class="form-control">
+            <label class="form-label ">Cantidad máxima de zapatos</label>
+            <input v-model.number="inputRoles.assembler.shoesMaxQuantity" type="text " class="form-control">
             <div>
-             <h6 class="error" v-if="errors.extraHoursQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
+             <h6 class="error" v-if="errors.assembler.shoesMaxQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
              </div> 
           </div>
-
+          
           <div class="mb-3">
-            <label  class=" form-label ">Valor del subsidio</label>
-            <input v-model.number="subsidy" type="text " class="form-control">  
+            <label  class=" form-label ">Cantidad máxima de zapatillas</label>
+            <input v-model.number="inputRoles.assembler.tennisMaxQuantity" type="text " class="form-control">  
             <div>
-                <h6 class="error" v-if="errors.subsidy" style="color:red" v-text="'wkjhgiugb'" ></h6>
+                <h6 class="error" v-if="errors.assembler.tennisMaxQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
           </div>
 
-          <div class="mb-3">
-            <label  class=" form-label ">Bono hijos</label>
-            <input v-model.number="bonus" type="text " class="form-control"> 
-            <div>
-                <h6 class="error" v-if="errors.bonus" style="color:red" v-text="'wkjhgiugb'" ></h6>
-            </div>   
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label ">Comisión</label>
-            <input v-model.number="comission" type="text " class="form-control">
-            <div>
-                <h6 class="error" v-if="errors.comission" style="color:red" v-text="'wkjhgiugb'" ></h6>
-            </div> 
-          </div>
 
           <span class="d-flex justify-content-center " >
             <button  class=" btn shadow btn-primary ">Guardar</button>
@@ -86,23 +71,24 @@
         </fieldset>
       </form>
 
-      <form class="mt-4" v-else-if="defaultRol === 'Secretario' " >
+      <form @submit.prevent=""
+       class="mt-4" v-else-if="defaultRol === 'Secretario' " >
         <fieldset >
           <h5>Secretario</h5>
                
           <div class="mb-3">
             <label  class=" form-label ">Salario base</label>
-            <input v-model.number="baseSalary"  type="text " class="form-control">  
+            <input v-model.number="inputRoles.secretary.baseSalary"  type="text " class="form-control">  
             <div>
-            <h6 class="error" v-if="errors.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
+            <h6 class="error" v-if="errors.secretary.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
           </div>
 
           <div class="mb-3">
-            <label class="form-label ">Horas extras</label>
-            <input v-model.number="extraHoursQuantity" type="text " class="form-control">
+            <label class="form-label ">Porcentaje horas extras</label>
+            <input v-model.number="inputRoles.assembler.extraHoursPercent" type="text " class="form-control">
             <div>
-             <h6 class="error" v-if="errors.extraHoursQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
+             <h6 class="error" v-if="errors.secretary.extraHoursPercent" style="color:red" v-text="'wkjhgiugb'" ></h6>
              </div> 
           </div>
 
@@ -112,14 +98,15 @@
         </fieldset>
       </form>
 
-      <form class="mt-4" v-else-if="defaultRol === 'Vendedor' " >
+      <form @submit.prevent=""
+      class="mt-4" v-else-if="defaultRol === 'Vendedor' " >
         <fieldset >
           <h5>Vendedor</h5>
           <div class="mb-3">
             <label  class="form-label">Salario base</label>
             <input v-model.number="baseSalary"  type="text " class="form-control">  
             <div>
-            <h6 class="error" v-if="errors.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
+            <h6 class="error" v-if="errors.seller.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
           </div>
 
@@ -127,17 +114,11 @@
             <label  class=" form-label ">Comisión</label>
             <input v-model.number="baseSalary"  type="text " class="form-control">  
             <div>
-            <h6 class="error" v-if="errors.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
+            <h6 class="error" v-if="errors.seller.comission" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
           </div>
 
-          <div class="mb-3">
-            <label class="form-label ">Subsidio</label>
-            <input v-model.number="extraHoursQuantity" type="text " class="form-control">
-            <div>
-             <h6 class="error" v-if="errors.extraHoursQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
-             </div> 
-          </div>
+         
 
           <span class="d-flex justify-content-center " >
             <button  class=" btn shadow btn-primary ">Guardar</button>
