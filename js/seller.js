@@ -2,15 +2,16 @@ var app = new Vue( {
     el: '#app',
     data: {
         baseSalary: "",
-        extraHours: "",
-        commission: "",
-        benefit: "",
+        totalSales: "",
+        transportSubsidy: 117172,
+        overtimePrice: 38000,
         totalPay: 0,
+        extraHours: "",
+        totalCommission: 0,
         errorBaseSalary: false,
         errorExtraHours: false,
-        errorCommission: false,
-        errorBenefit: false,
-        overtimePrice: 38000,
+        errorTotalSales: false,
+        errorTransportSubsidy: false,
         dataSellers: []
     },
     methods: {
@@ -20,9 +21,8 @@ var app = new Vue( {
         createrSeller() {
             this.dataSellers.push({
                 baseSalarySel: this.baseSalary,
-                extraHourSel: this.extraHours,
-                commissionSel: this.commission,
-                benefitSel: this.benefit,
+                totalSalesSel: this.totalSales,
+                transportSubsidySel: this.transportSubsidy,
                 totalPaySel: this.calculate()
             })
             console.log(this.dataSellers)
@@ -31,14 +31,19 @@ var app = new Vue( {
         },
         clearForm(){
             this.baseSalary = "",
-            this.extraHours = ""
-            this.commission = "",
-            this.benefit = ""
+            this.totalSales = ""
+        },
+        showFormatedNumber(value){
+            function thousandSeparator(number = 0, decimalsQuantity = 2) {
+                return Number(number).toFixed(decimalsQuantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              }
+              return thousandSeparator(value)
         },
         calculate() {
-           return this.totalPay = (this.overtimePrice * this.extraHours)
+            this.totalCommission = (this.totalSales >= 5000000)? this.totalSales * 0.10 : (this.totalSales >= 10000000) ? this.totalSales * 0.20 : 0;
+           return this.totalPay = this.baseSalary + this.totalCommission + this.transportSubsidy;
            console.log(this.totalPay)
-        },      
+        },        
         updateLocalStorage() {
             localStorage.setItem("dataStorang", JSON.stringify(this.dataSellers))
         },
@@ -50,23 +55,11 @@ var app = new Vue( {
             } else {
               this.errorBaseSalary = false;
             }
-            if(this.extraHours === "" || this.extraHours <= 0 || typeof this.extraHours !== "number") {
-                this.errorExtraHours = true;
+            if(this.totalSales === "" || this.totalSales < 0 || typeof this.totalSales  !== "number") {
+                this.errorTotalSales = true;
                 error = true;
             } else {
-                this.errorExtraHours = false;
-            }
-            if(this.commission === "" || this.commission <= 0 || typeof this.commission !== "number") {
-                this.errorCommission = true;
-                error = true;
-            } else {
-                this.errorCommission = false;
-            }
-            if(this.benefit === "" || this.benefit <= 0 || typeof this.benefit !== "number") {
-                this.errorBenefit = true;
-                error = true;
-            } else {
-                this.errorBenefit = false;
+                this.errorTotalSales= false;
             }
             return error;
         },
