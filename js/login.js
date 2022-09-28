@@ -14,6 +14,7 @@ var app = new Vue({
     ],
     errorPosition: false,
     errorPin: false,
+    panel: window.location.href = '../view/menu.html'
   },
   methods: {
     clearForm() {
@@ -38,13 +39,14 @@ var app = new Vue({
             "Verifique que los datos sean correctos",
             "error"
           )
-        : this.message(
-            "¡Datos correctos!",
-            2200,
-            "center",
-            "Ingreso exito",
-            "success"
-          );
+        : this.panel
+        // this.message(
+        //     "¡Datos correctos!",
+        //     2200,
+        //     "center",
+        //     "Ingreso exito",
+        //     "success"
+        //   );
     },
     fieldValidations() {
       error = false;
