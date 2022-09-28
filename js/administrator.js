@@ -4,9 +4,7 @@ new Vue({
        defaultRol: null,
        wholeRoles: ['Secretario','Vendedor','Ensamblador'],
        displayMessageError: "El campo 'X' debe ser un  dato valido",
-       CHART_JS_REFERENCE :'myChart',
        errors:false,
-      
        assemblerNormalHourValue: 5000,
        fullName: "",
        identityNumber: "",
@@ -15,14 +13,49 @@ new Vue({
        subsidy: "",
        bonus: "",
        comission:"",
-       resultLiquidation: 0,
-       adminData: [],
-       STORAGE_KEY: "setDataStorage"
+       resultLiquidation: 0, 
+       adminData : ['Problematica numero 2'],
+       adminPrivileges: [
+       {
+        rol: 'Secretario',
+        values: {
+          baseSalary: 2500000,
+          extraHours: (hours) => hours * (this.assemblerNormalHourValue * 1.8)
+        }
+       },
+       {
+        rol: 'Vendedor',
+        values: {
+          baseSalary: 2500000,
+          comission: function(inputValue) {
+            if(inputValue > 5000000) {
+              return 
+            }
+          } ,
+          subsidy: 80000
+        }
+       },
+       {
+        rol: 'Ensamblador',
+        values: {
+          baseSalary: 2500000,
+          extraHours: (hours) => hours * (this.assemblerNormalHourValue * 2.2)
+        }
+       }
+       ],
+
+       SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
+       SELLER_STORAGE_KEY: "setSellerDataStorage",
+       ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
+       PROBLEMATICA_KEY: "setStorage"
     },
     created(){
-        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]')
+        this.adminData = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]')
       },
     methods: {
+      showData (){
+        console.log(this.adminData);
+      },
         updateLocalStorage(){
             return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
           },
@@ -36,7 +69,6 @@ new Vue({
               timer
             })
     },
-    
     validateInputs() {
         error = false;
       if (this.fullName === "" ) {
