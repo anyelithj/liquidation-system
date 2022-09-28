@@ -23,10 +23,14 @@ new Vue({
        comission:"",
        resultLiquidation: 0,
        consolidationLiquidations: [],
-       ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage"
+       pruebaArr: [],
+       ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
+       PROBLEMATICA_KEY: "setStorage"
     },
     created(){
-        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]')
+        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]') 
+
+        
       },
     methods: {
         updateLocalStorage(){
@@ -138,6 +142,8 @@ new Vue({
             total: this.defineTotal(this.baseSalary,this.defineExtraHours(this.extraHoursQuantity),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComission(this.comission, this.baseSalary))
         })
         this.updateLocalStorage()
+
+        console.log(this.pruebaArr)
         this.cleanInputs()
     },
     deleteAlert(item) {
