@@ -23,18 +23,14 @@ new Vue({
        comission:"",
        resultLiquidation: 0,
        consolidationLiquidations: [],
-       pruebaArr: [],
-       ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
-       PROBLEMATICA_KEY: "setStorage"
+       STORAGE_KEY: "setDataStorage"
     },
     created(){
-        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]') 
-
-        
+        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]')
       },
     methods: {
         updateLocalStorage(){
-            return localStorage.setItem(this.ASSEMBLER_STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
+            return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
           },
         message(title,timer,position,text){
             Swal.fire({
@@ -142,8 +138,6 @@ new Vue({
             total: this.defineTotal(this.baseSalary,this.defineExtraHours(this.extraHoursQuantity),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComission(this.comission, this.baseSalary))
         })
         this.updateLocalStorage()
-
-        console.log(this.pruebaArr)
         this.cleanInputs()
     },
     deleteAlert(item) {

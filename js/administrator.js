@@ -3,10 +3,37 @@ new Vue({
     data: {
        defaultRol: null,
        wholeRoles: ['Secretario','Vendedor','Ensamblador'],
-       displayMessageError: "El campo 'X' debe ser un  dato valido",
-       errors:false,
-       assemblerNormalHourValue: 5000,
-       fullName: "",
+       errors:{
+        selectOptions: false,
+        assembler: {
+          baseSalary: false,
+          shoesMaxQuantity: false,
+          tennisMaxQuantity: false
+        },
+        secretary: {
+          baseSalary: false,
+          extraHoursPercent: false
+        },
+        seller: {
+          baseSalary: false,
+          comission: false
+        }
+       },
+       inputRoles: {
+        assembler: {
+          baseSalary: "",
+          shoesMaxQuantity: "",
+          tennisMaxQuantity: ""
+        },
+        secretary: {
+          baseSalary: "",
+          extraHoursPercent: ""
+        },
+        seller: {
+          baseSalary: "",
+          comission: ""
+        }
+       },
        identityNumber: "",
        baseSalary: "",
        extraHoursQuantity:"",
@@ -14,83 +41,67 @@ new Vue({
        bonus: "",
        comission:"",
        resultLiquidation: 0, 
-       adminData : ['Problematica numero 2'],
+       adminData : [],
        adminPrivileges: [
         {
           rol: 'Secretario',
           values: {
-            baseSalary: (inputValue=2500000) => inputValue,
-            hourPrice: ()=> console.log(2500000/160),
-            extraHours: (hours,percent=1.8) => console.log(hours * (178571429 * percent))
+            baseSalary: ( salary = 2500000 ) => salary,
+            extraHours: ( percent = 180 ) =>  percent/100
           }
          },
        {
         rol: 'Vendedor',
         values: {
-          baseSalary: (inputValue=3000000) => inputValue,
-          comission: function(inputValue) {
+          baseSalary: ( inputValue = 3000000 ) => inputValue,
+          comission: (baseSalary= 3000000, inputValue, comission1= .10, comission2= .20) => {
             if(inputValue > 5000000 && inputValue <= 10000000) {
-              return baseSalary * .10
+              return baseSalary * comission1
             }else if(inputValue < 10000000) {
-              return baseSalary * .20
+              return baseSalary *comission2
             }return 0
-          } ,
-          subsidy: 80000
+          } 
         }
        },
        {
         rol: 'Ensamblador',
         values: {
-          baseSalary: (inputValue=2800000) => inputValue,
-          hourPrice: ()=> baseSalary/160,
+          baseSalary: ( inputValue = 2800000 ) => inputValue,
+          hourPrice: (baseSalary = 2800000) => baseSalary/160,
           extraHours: (hours) => hours * (hourPrice * 2.2),
           subsidy: (inputValue) => inputValue,
-          sonBonus: (num) => {
-            if(num === 1){
-              return 80000
-          }else if(num > 1){
-              return num * 60000
-          }return  0
-          },
-          comission: (quantity, salary) => {
-            if(quantity > 1000 && quantity < 1700){
+          comissionShoes: (quantity, salary, min=1000, max=2000) => {
+            if(quantity > min && quantity <= max){
                 return  salary * .10
-            }else if(quantity > 1700 && quantity < 2000){
-                return  salary * .15
-            }else  if(quantity > 2000 && quantity < 3000){
+            }else  if(quantity > max ){
                 return salary * .20
-            }else  if(quantity > 3000){
+            }else  return 0
+          },
+          comissionTennis: (quantity,salary) => {
+            if(quantity > 1700 && quantity < 2000){
+              return  salary * .15
+          }else  if(quantity > 3000){
                 return  salary * .30
-            }else  {return 0}
-        }
+            }else  return 0
+          }
         }
        }
        ],
-
+       ADMIN_KEY: "setAdminDataStorage",
        SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
        SELLER_STORAGE_KEY: "setSellerDataStorage",
        ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
-       PROBLEMATICA_KEY: "setStoragee",
-       data: {
-        values:{
-          a:5,
-          b:10
-        },
-        total:() => this.data.values.a * 2
-       }
     },
     created(){
-        this.adminData = JSON.parse(localStorage.getItem(this.ASSEMBLER_STORAGE_KEY) || '[]')
+        this.updateLocalStorage()
+        this.adminData = JSON.parse(localStorage.getItem(this.ADMIN_KEY) || '[]')
       },
     methods: {
       showData (){
-        console.log(this.adminData);
-      },
-      prueba(){
-        return console.log(this.data.total());
+        console.log(this.adminData)
       },
         updateLocalStorage(){
-            return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
+            return localStorage.setItem(this.ADMIN_KEY, JSON.stringify(this.adminPrivileges))
           },
         message(title,timer,position,text){
             Swal.fire({
@@ -155,38 +166,12 @@ new Vue({
         this.bonus= "",
         this.comission=""
     },
-    defineExtraHours(hours){
-       return hours * (this.assemblerNormalHourValue * 2.2)
-    },
+    
     showFormatedNumber(value){
         function thousandSeparator(number = 0, decimalsQuantity = 2) {
             return Number(number).toFixed(decimalsQuantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }
           return thousandSeparator(value)
-    },
-    defineComission(quantity, salary){
-        if(quantity > 1000 && quantity < 1700){
-            return  salary * .10
-        }else if(quantity > 1700 && quantity < 2000){
-            return  salary * .15
-        }else  if(quantity > 2000 && quantity < 3000){
-            return salary * .20
-        }else  if(quantity > 3000){
-            return  salary * .30
-        }else  {return 0}
-    },
-    defineBonusPerChild(num){
-        if(num === 1){
-            return 80000
-        }else if(num > 1){
-            return num * 60000
-        }return  0
-    },
-    defineTotal(...values){
-        return values.reduce((a,b) => a + b)
-    },
-    calculateLiquidation() {
-      return console.log(this.defaultRol)
     },
     message(title,timer,position,text){
         Swal.fire({
@@ -196,29 +181,6 @@ new Vue({
           title,
           showConfirmButton: false,
           timer
-        })},
-    deleteAlert(item) {
-        Swal.fire({
-            title: "¿Está seguro de eliminar?",
-            text: "¡Este proceso es irreversible!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "SI",
-            cancelButtonText: "NO",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.consolidationLiquidations.splice(this.consolidationLiquidations.indexOf(item), 1)
-              this.message(
-                "Se eliminó correctamente",
-                2000,
-                "center",
-                "¡Los cambios fueron guardados!"
-              )
-              this.updateLocalStorage()
-            }
-          })
-    }
+        })}
     }
 })
