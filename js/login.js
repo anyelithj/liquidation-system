@@ -43,7 +43,7 @@ var app = new Vue({
             2200,
             "center",
             "Ingreso exito",
-            "sucess"
+            "success"
           );
     },
     fieldValidations() {
