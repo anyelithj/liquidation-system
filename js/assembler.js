@@ -23,14 +23,22 @@ new Vue({
        comission:"",
        resultLiquidation: 0,
        consolidationLiquidations: [],
-       STORAGE_KEY: "setDataStorage"
+       ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
+       dataFromAdmin: {}
     },
     created(){
         this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]')
+        this.dataFromAdmin = this.getParsedLocalStorage(this.ASSEMBLER_STORAGE_KEY)
       },
     methods: {
         updateLocalStorage(){
             return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
+          },
+          getParsedLocalStorage(key) {
+            return JSON.parse(localStorage.getItem(key) || "[]");
+          },
+          showDataFromAdmin(){
+            console.log(this.dataFromAdmin)
           },
         message(title,timer,position,text){
             swal({
