@@ -1,4 +1,4 @@
-var app = new Vue({
+new Vue({
   el: "#app",
   data: {
     position: ["administrador", "secretario", "vendedor", "ensamblador"],
@@ -10,7 +10,7 @@ var app = new Vue({
       { position: "vendedor", pin: "32846910" },
       { position: "ensamblador", pin: "522376" },
       { position: "ensamblador", pin: "56789" },
-      { position: "secretario", pin: "7865677" },
+      { position: "secretario", pin: "123" },
     ],
     errorPosition: false,
     errorPin: false,
@@ -22,29 +22,59 @@ var app = new Vue({
     },
     validateCredentials(user, key) {
       this.fieldValidations(user, key)
-      console.log(user)
-      console.log(typeof key)
       let loguedUser = [];
       let session = this.userCredentials.filter(
         (({position, pin})  => position === user && pin === key)
       );
-      console.log(session);
       loguedUser = [...session];
-      return loguedUser.length === 0
-        ? this.message(
-            "Oops",
-            2200,
-            "center",
-            "Verifique que los datos sean correctos",
-            "error"
-          )
-        : this.message(
+      loguedUser.length === 0 ? this.message( "Oops", 3200,"center","Verifique que los datos sean correctos","error"): this.Session(loguedUser);
+      return this.clearForm();
+    },
+    Session(data){
+      console.log(data)
+      let info = data[0].position;
+      if(info === "vendedor") {
+        this.message(
+          "¡Datos correctos!",
+          3200,
+          "center",
+          "Ingreso exito",
+          "success"
+          );
+          console.log(info)
+          window.location.href = '../view/seller.html'
+      } else if(info === "ensamblador") {
+        this.message(
+          "¡Datos correctos!",
+          3200,
+          "center",
+          "Ingreso exito",
+          "success"
+          );
+          console.log(info)
+          window.location.href = '../view/assembler.html'
+      } else if(info === "secretario") {
+        console.log(info)
+          this.message(
             "¡Datos correctos!",
-            2200,
+            3200,
             "center",
             "Ingreso exito",
             "success"
           );
+          window.location.href = '../view/secretary.html'
+      } else if(info === "administrador") {
+        console.log(info)
+          this.message(
+            "¡Datos correctos!",
+            3200,
+            "center",
+            "Ingreso exito",
+            "success"
+          );
+          window.location.href = '../view/administrator.html'
+      }
+          console.log(info)
     },
     fieldValidations() {
       error = false;
@@ -63,7 +93,7 @@ var app = new Vue({
       return error;
     },
     message(title, timer, position, text, icon) {
-      Swal.fire({
+      console.log({
         position,
         text,
         icon,
