@@ -1,186 +1,218 @@
 new Vue({
-    el: '#app',
-    data: {
-       defaultRol: null,
-       wholeRoles: ['Secretario','Vendedor','Ensamblador'],
-       errors:{
-        selectOptions: false,
-        assembler: {
-          baseSalary: false,
-          shoesMaxQuantity: false,
-          tennisMaxQuantity: false
-        },
-        secretary: {
-          baseSalary: false,
-          extraHoursPercent: false
-        },
-        seller: {
-          baseSalary: false,
-          comission: false
-        }
-       },
-       inputRoles: {
-        assembler: {
-          baseSalary: "",
-          shoesMaxQuantity: "",
-          tennisMaxQuantity: ""
-        },
-        secretary: {
-          baseSalary: "",
-          extraHoursPercent: ""
-        },
-        seller: {
-          baseSalary: "",
-          comission: ""
-        }
-       },
-       identityNumber: "",
-       baseSalary: "",
-       extraHoursQuantity:"",
-       subsidy: "",
-       bonus: "",
-       comission:"",
-       resultLiquidation: 0, 
-       adminData : [],
-       adminPrivileges: [
-        {
-          rol: 'Secretario',
-          values: {
-            baseSalary: ( salary = 2500000 ) => salary,
-            extraHours: ( percent = 180 ) =>  percent/100
-          }
-         },
-       {
-        rol: 'Vendedor',
-        values: {
-          baseSalary: ( inputValue = 3000000 ) => inputValue,
-          comission: (baseSalary= 3000000, inputValue, comission1= .10, comission2= .20) => {
-            if(inputValue > 5000000 && inputValue <= 10000000) {
-              return baseSalary * comission1
-            }else if(inputValue < 10000000) {
-              return baseSalary *comission2
-            }return 0
-          } 
-        }
-       },
-       {
-        rol: 'Ensamblador',
-        values: {
-          baseSalary: ( inputValue = 2800000 ) => inputValue,
-          hourPrice: (baseSalary = 2800000) => baseSalary/160,
-          extraHours: (hours) => hours * (hourPrice * 2.2),
-          subsidy: (inputValue) => inputValue,
-          comissionShoes: (quantity, salary, min=1000, max=2000) => {
-            if(quantity > min && quantity <= max){
-                return  salary * .10
-            }else  if(quantity > max ){
-                return salary * .20
-            }else  return 0
-          },
-          comissionTennis: (quantity,salary) => {
-            if(quantity > 1700 && quantity < 2000){
-              return  salary * .15
-          }else  if(quantity > 3000){
-                return  salary * .30
-            }else  return 0
-          }
-        }
-       }
-       ],
-       ADMIN_KEY: "setAdminDataStorage",
-       SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
-       SELLER_STORAGE_KEY: "setSellerDataStorage",
-       ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
+  el: "#app",
+  data: {
+    defaultRol: null,
+    wholeRoles: ["Secretario", "Vendedor", "Ensamblador"],
+    errorOptions: false,
+    errorsAssembler: {
+      baseSalary: false,
+      minPercentShoes: false,
+      maxPercentShoes: false,
+      minPercentTennis: false,
+      maxPercentTennis: false,
+      maxShoesQuantity: false,
+      maxTennisQuantity: false,
     },
-    created(){
-        this.updateLocalStorage()
-        this.adminData = JSON.parse(localStorage.getItem(this.ADMIN_KEY) || '[]')
+    errorsSeller: {
+      baseSalary: false,
+      minComission: false,
+      maxComission: false,
+    },
+    errorsSecretary: {
+      baseSalary: false,
+      extraHoursPercent: false,
+    },
+    inputRoles: {
+      assembler: {
+        baseSalaryAssembler:"",
+        minPercentShoes:"",
+        maxPercentShoes:"",
+        minPercentTennis:"",
+        maxPercentTennis:"",
+        maxShoesQuantity:"",
+        maxTennisQuantity:"",
       },
-    methods: {
-      showData (){
-        console.log(this.adminData)
+      secretary: {
+        baseSalarySecretary:"",
+        extraHoursPercent:"",
       },
-        updateLocalStorage(){
-            return localStorage.setItem(this.ADMIN_KEY, JSON.stringify(this.adminPrivileges))
-          },
-        message(title,timer,position,text){
-            Swal.fire({
-              position,
-              text,
-              icon: "success",
-              title,
-              showConfirmButton: false,
-              timer
-            })
+      seller: {
+        baseSalarySeller:"",
+        minComission:"",
+        maxComission:"",
+      },
+    },
+    Secretary: {},
+    Assembler: {},
+    Seller: {},
+    wholeRolesData: {},
+    ADMIN_KEY: "setAdminDataStorage",
+    SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
+    SELLER_STORAGE_KEY: "setSellerDataStorage",
+    ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
+  },
+  created() {
+    this.Secretary = this.getParsedLocalStorage(this.SECRETARY_STORAGE_KEY);
+
+    this.Assembler = this.getParsedLocalStorage(this.ASSEMBLER_STORAGE_KEY);
+
+    this.Seller = this.getParsedLocalStorage(this.SELLER_STORAGE_KEY);
+
+    this.wholeRolesData = {
+      ...this.Secretary,
+      ...this.Assembler,
+      ...this.Seller,
+    };
+  },
+  methods: {
+    showData() {
+      console.log(this.wholeRolesData);
+    },
+    setLocalStorageData(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    },
+    getParsedLocalStorage(key) {
+      return JSON.parse(localStorage.getItem(key) || "[]");
+    },
+    defineComissionShoes(quantity, salary, min = 1000, max = 2000) {
+      if (quantity > min && quantity <= max) {
+        return salary * 0.1;
+      } else if (quantity > max) {
+        return salary * 0.2;
+      } else return 0;
+    },
+    defineComissionTennis(max = 3000, min = 1700, quantity, salary) {
+      if (quantity > min && quantity < 2000) {
+        return salary * 0.15;
+      } else if (quantity > 3000) {
+        return salary * 0.3;
+      } else return 0;
+    },
+
+    setDataSecretary() {
+      this.Secretary = {
+        baseSalarySecretary: this.inputRoles.secretary?.baseSalarySecretary,
+        extraHours: this.inputRoles.secretary?.extraHoursPercent / 100,
+      };
+      this.setLocalStorageData(this.SECRETARY_STORAGE_KEY, this.Secretary);
+      this.message(
+        "¡Enhorabuena!",
+        2000,
+        "center",
+        "¡Los cambios fueron guardados correctamente!",
+        false
+      );
+      this.inputRoles.secretary.baseSalary = "";
+      this.inputRoles.secretary.extraHoursPercent = "";
+    },
+
+    setDataAssembler() {
+      this.Assembler = {
+        baseSalaryAssembler: this.inputRoles.assembler.baseSalaryAssembler,
+        minPercentShoes: this.inputRoles.assembler.minPercentShoes,
+        maxPercentShoes: this.inputRoles.assembler.maxPercentShoes,
+        minPercentTennis: this.inputRoles.assembler.minPercentTennis,
+        maxPercentTennis: this.inputRoles.assembler.maxPercentTennis,
+        maxShoesQuantity: this.inputRoles.assembler.maxShoesQuantity,
+        maxTennisQuantity: this.inputRoles.assembler.maxTennisQuantity,
+      };
+      this.setLocalStorageData(this.ASSEMBLER_STORAGE_KEY, this.Assembler);
+      this.message(
+        "¡Enhorabuena!",
+        2000,
+        "center",
+        "¡Los cambios fueron guardados correctamente!",
+        false
+      );
+      this.inputRoles.assembler.baseSalary = "";
+      this.inputRoles.assembler.minPercentShoes = "";
+      this.inputRoles.assembler.maxPercentShoes = "";
+      this.inputRoles.assembler.minPercentTennis = "";
+      this.inputRoles.assembler.maxPercentTennis = "";
+      this.inputRoles.assembler.maxShoesQuantity = "";
+      this.inputRoles.assembler.maxTennisQuantity = "";
+    },
+    setDataSeller() {
+      this.Seller = {
+        baseSalarySeller: this.inputRoles.seller.baseSalarySeller,
+        minComission: this.inputRoles.seller.minComission,
+        maxComission: this.inputRoles.seller.maxComission,
+      };
+      this.setLocalStorageData(this.SELLER_STORAGE_KEY, this.Seller);
+      this.message(
+        "¡Enhorabuena!",
+        2000,
+        "center",
+        "¡Los cambios fueron guardados correctamente!",
+        false
+      );
+      this.inputRoles.seller.baseSalary = "";
+      this.inputRoles.seller.minComission = "";
+      this.inputRoles.seller.maxComission = "";
+    },
+    message(title, timer, position, text, button) {
+      swal({
+        position,
+        text,
+        icon: "success",
+        title,
+        dangerMode: false,
+        timer,
+        button,
+      });
     },
     validateInputs() {
-        error = false;
-      if (this.fullName === "" ) {
+      error = false;
+      if (this.fullName === "") {
         this.errors.fullName = true;
         error = true;
       } else {
         this.errors.fullName = false;
       }
-      if (this.identityNumber === "" || typeof this.fullName !== 'number') {
+      if (this.identityNumber === "" || typeof this.fullName !== "number") {
         this.errors.identityNumber = true;
         error = true;
       } else {
         this.errors.identityNumber = false;
       }
-      if (this.baseSalary === "" || typeof this.fullName !== 'number') {
+      if (this.baseSalary === "" || typeof this.fullName !== "number") {
         this.errors.baseSalary = true;
         error = true;
       } else {
         this.errors.baseSalary = false;
       }
-      if (this.extraHoursQuantity === "" || typeof this.fullName !== 'number') {
+      if (this.extraHoursQuantity === "" || typeof this.fullName !== "number") {
         this.errors.extraHoursQuantity = true;
         error = true;
       } else {
         this.errors.extraHoursQuantity = false;
       }
-      if (this.subsidy === "" || typeof this.fullName !== 'number') {
+      if (this.subsidy === "" || typeof this.fullName !== "number") {
         this.errors.subsidy = true;
         error = true;
       } else {
         this.errors.subsidy = false;
       }
-      if (this.bonus == "" || typeof this.fullName !== 'number') {
+      if (this.bonus == "" || typeof this.fullName !== "number") {
         this.errors.bonus = true;
         error = true;
       } else {
         this.errors.bonus = false;
-      }if(this.comission === "" || typeof this.fullName !== 'number'){
-         this.errors.comission = true;
-      }else{
-        this.errors.comission = false
+      }
+      if (this.comission === "" || typeof this.fullName !== "number") {
+        this.errors.comission = true;
+      } else {
+        this.errors.comission = false;
       }
       return error;
     },
-    cleanInputs(){
-        this.fullName ="",
-        this.identityNumber= "",
-        this.baseSalary= "",
-        this.extraHoursQuantity= "",
-        this.subsidy= "",
-        this.bonus= "",
-        this.comission=""
+    showFormatedNumber(value) {
+      function thousandSeparator(number = 0, decimalsQuantity = 2) {
+        return Number(number)
+          .toFixed(decimalsQuantity)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+      return thousandSeparator(value);
     },
-    
-    showFormatedNumber(value){
-        function thousandSeparator(number = 0, decimalsQuantity = 2) {
-            return Number(number).toFixed(decimalsQuantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          }
-          return thousandSeparator(value)
-    },
-    message(title,timer,position,text){
-        Swal.fire({
-          position,
-          text,
-          icon: "success",
-          title,
-          showConfirmButton: false,
-          timer
-        })}
-    }
-})
+  },
+});

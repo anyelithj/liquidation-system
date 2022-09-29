@@ -33,12 +33,12 @@ new Vue({
             return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
           },
         message(title,timer,position,text){
-            Swal.fire({
+            swal({
               position,
               text,
               icon: "success",
               title,
-              showConfirmButton: false,
+              dangerMode: false,
               timer
             })
     },
@@ -141,17 +141,14 @@ new Vue({
         this.cleanInputs()
     },
     deleteAlert(item) {
-        Swal.fire({
+        swal({
             title: "¿Está seguro de eliminar?",
             text: "¡Este proceso es irreversible!",
             icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "SI",
-            cancelButtonText: "NO",
+            buttons: true,
+            dangerMode: true
           }).then((result) => {
-            if (result.isConfirmed) {
+            if (result) {
               this.consolidationLiquidations.splice(this.consolidationLiquidations.indexOf(item), 1)
               this.message(
                 "Se eliminó correctamente",
@@ -160,6 +157,8 @@ new Vue({
                 "¡Los cambios fueron guardados!"
               )
               this.updateLocalStorage()
+            }else{
+
             }
           })
     }
