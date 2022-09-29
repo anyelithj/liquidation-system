@@ -162,7 +162,7 @@ new Vue({
   },
   validateInputs() {
       error = false;
-    if (this.fullName === "" ) {
+    if (this.fullName === '') {
       this.errors.fullName = true;
       error = true;
     } else {
