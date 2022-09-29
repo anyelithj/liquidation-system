@@ -45,8 +45,7 @@ new Vue({
     Secretary: {},
     Assembler: {},
     Seller: {},
-    wholeRolesData: {},
-    ADMIN_KEY: "setAdminDataStorage",
+    wholeParsedData: {},
     SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
     SELLER_STORAGE_KEY: "setSellerDataStorage",
     ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
@@ -58,15 +57,10 @@ new Vue({
 
     this.Seller = this.getParsedLocalStorage(this.SELLER_STORAGE_KEY);
 
-    this.wholeRolesData = {
-      ...this.Secretary,
-      ...this.Assembler,
-      ...this.Seller,
-    };
   },
   methods: {
     showData() {
-      console.log(this.wholeRolesData);
+      console.log(this.wholeParsedData);
     },
     setLocalStorageData(key, data) {
       localStorage.setItem(key, JSON.stringify(data));
@@ -94,7 +88,8 @@ new Vue({
         baseSalarySecretary: this.inputRoles.secretary?.baseSalarySecretary,
         extraHours: this.inputRoles.secretary?.extraHoursPercent / 100,
       };
-      this.setLocalStorageData(this.SECRETARY_STORAGE_KEY, this.Secretary);
+      this.setLocalStorageData(this.SECRETARY_STORAGE_KEY, this.Secretary)
+      
       this.message(
         "¡Enhorabuena!",
         2000,
@@ -117,6 +112,7 @@ new Vue({
         maxTennisQuantity: this.inputRoles.assembler.maxTennisQuantity,
       };
       this.setLocalStorageData(this.ASSEMBLER_STORAGE_KEY, this.Assembler);
+      
       this.message(
         "¡Enhorabuena!",
         2000,
@@ -139,6 +135,7 @@ new Vue({
         maxComission: this.inputRoles.seller.maxComission,
       };
       this.setLocalStorageData(this.SELLER_STORAGE_KEY, this.Seller);
+      
       this.message(
         "¡Enhorabuena!",
         2000,
