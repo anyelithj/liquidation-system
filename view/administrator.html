@@ -42,7 +42,7 @@
                <h5  >Ensamblador</h5>
           <div class="mb-3">
             <label  class=" form-label ">Salario base</label>
-            <input placeholder="Escribe el salario..." v-model.number="inputRoles.assembler.baseSalary"  type="text " class="form-control">  
+            <input placeholder="Escribe el salario..." v-model.number="inputRoles.assembler.baseSalaryAssembler"  type="text " class="form-control">  
             <div>
             <h6 class="error" v-if="errorsAssembler.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
@@ -109,7 +109,9 @@
                
           <div class="mb-3">
             <label  class=" form-label ">Salario base</label>
-            <input placeholder="Escribe el salario..." v-model.number="inputRoles.secretary.baseSalary"  type="text " class="form-control">  
+            <input placeholder="Escribe el salario..." v-model.number="inputRoles.secretary.baseSalarySecretary"  type="text " class="form-control"
+            v-text="inputRoles.secretary.baseSalary"
+            >  
             <div>
             <h6 class="error" v-if="errorsSecretary.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
@@ -117,7 +119,9 @@
 
           <div class="mb-3">
             <label class="form-label ">Porcentaje horas extras</label>
-            <input placeholder="Ejemplo: 10 para representar la decima parte" v-model.number="inputRoles.secretary.extraHoursPercent" type="text " class="form-control">
+            <input placeholder="Ejemplo: 10 para representar la decima parte" v-model.number="inputRoles.secretary.extraHoursPercent" type="text " class="form-control"
+            v-text="inputRoles.secretary.extraHoursPercent"
+            >
             <div>
              <h6 class="error" v-if="errorsSecretary.extraHoursPercent" style="color:red" v-text="'wkjhgiugb'" ></h6>
              </div> 
@@ -135,7 +139,7 @@
           <h5>Vendedor</h5>
           <div class="mb-3">
             <label  class="form-label">Salario base</label>
-            <input placeholder="Escribe el salario..." v-model.number="inputRoles.seller.baseSalary"  type="text " class="form-control">  
+            <input placeholder="Escribe el salario..." v-model.number="inputRoles.seller.baseSalarySeller"  type="text " class="form-control">  
             <div>
             <h6 class="error" v-if="errorsSeller.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
             </div>  
