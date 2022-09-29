@@ -5,9 +5,9 @@ new Vue({
     optionPosition: "",
     pin: "",
     userCredentials: [
-      { position: "administrador", pin: "43891569" },
-      { position: "secretario", pin: "23138" },
-      { position: "vendedor", pin: "32846910" },
+      { position: "administrador", pin: "123456" },
+      { position: "secretario", pin: "12345678" },
+      { position: "vendedor", pin: "87654321" },
       { position: "ensamblador", pin: "522376" },
       { position: "ensamblador", pin: "56789" },
       { position: "secretario", pin: "123" },
