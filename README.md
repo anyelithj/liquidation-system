@@ -29,6 +29,6 @@ https://github.com/anyelithj/liquidation-system.git
 
 
 ## Contribuidores
-`[Jorge Arley](https://github.com/drbobby27)/
-[Anyelith Jacobo](https://github.com/anyelithj)/`
+[Jorge Arley](https://github.com/drbobby27)/
+[Anyelith Jacobo](https://github.com/anyelithj)/
 
