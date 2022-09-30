@@ -2,7 +2,7 @@ new Vue({
     el: '#app',
     data: {
        displayMessageError: "El campo 'X' debe ser un  dato valido",
-       error:true,
+       error:false,
        errors:{
        fullName: false,
        identityNumber: false,
@@ -97,44 +97,47 @@ new Vue({
     if (typeof this.fullName !== 'string' || this.fullName === "" ) {
       this.errors.fullName = true;
       error = true;
+      
     } else {
       this.errors.fullName = false;
     }
     if (typeof this.identityNumber !== 'number' ||  this.identityNumber === "") {
       this.errors.identityNumber = true;
       error = true;
+      
     } else {
       this.errors.identityNumber = false;
     }
     if (typeof this.assemblyShoes !== 'number' ||  this.assemblyShoes === "") {
       this.errors.assemblyShoes = true;
       error = true;
+      
     } else {
       this.errors.assemblyShoes = false;
     }
     if (typeof this.assemblyTennis !== 'number' ||  this.assemblyTennis === "") {
       this.errors.assemblyTennis = true;
       error = true;
+      
     } else {
       this.errors.assemblyTennis = false;
-    }
-    if (typeof this.baseSalary !== 'number' ||  this.baseSalary === "") {
-      this.errors.baseSalary = true;
-      error = true;
-    } else {
-      this.errors.baseSalary = false;
     }
     if (typeof this.extraHoursQuantity !== 'number' ||  this.extraHoursQuantity === "") {
       this.errors.extraHoursQuantity = true;
       error = true;
+      
     } else {
       this.errors.extraHoursQuantity = false;
     }if(typeof this.subsidy !== 'number' ||  this.subsidy === ""){
        this.errors.subsidy = true;
+       error= true
+       
     }else{
       this.errors.subsidy = false
     }if(typeof this.bonus !== 'number' ||  this.bonus === ""){
       this.errors.bonus = true;
+      error = true 
+      
    }else{
      this.errors.bonus = false
    }
@@ -162,7 +165,7 @@ new Vue({
       this.message('¡Enhorabuena!', 2500,'center','¡La liquidación se ha generado exitosamente!')
       this.clearInputs()
     },
-    validateLiquidation(){
+    validateFormLiquidation(){
       this.validateInputs() ? this.error : this.calculateLiquidation()
     },
     deleteAlert(item) {

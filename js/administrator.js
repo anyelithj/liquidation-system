@@ -1,6 +1,7 @@
 new Vue({
   el: "#app",
   data: {
+    error: false,
     defaultRol: null,
     wholeRoles: ["Secretario", "Vendedor", "Ensamblador"],
     errorOptions: false,
@@ -151,21 +152,6 @@ new Vue({
         button,
       });
     },
-    validateInputsRolSecretary(input) {
-      if(input === "") 
-      return this.errorsSecretary = true
-      return
-    },
-    validateInputsRolAssembler(input) {
-      if(input === "") 
-      return this.errorsSecretary = true
-      return
-    },
-    validateInputsRolSeller(input) {
-      if(input === "") 
-      return this.errorsSecretary = true
-      return
-    },
     showFormatedNumber(value) {
       function thousandSeparator(number = 0, decimalsQuantity = 2) {
         return Number(number)
@@ -174,5 +160,95 @@ new Vue({
       }
       return thousandSeparator(value);
     },
+    validateInputsSecretary(){
+      error = false;
+      if (typeof this.inputRoles.secretary.baseSalarySecretary !== 'number' ||  this.inputRoles.secretary.baseSalarySecretary === ""){
+        this.errorsSecretary.baseSalary = true;
+        error= true
+     }
+     else {
+      this.errorsSecretary.baseSalary = false;
+    }
+     return error;
+    },
+    validateInputsAssembler(){
+      error = false;
+      if (typeof this.inputRoles.assembler.baseSalaryAssembler !== 'number' || this.inputRoles.assembler.baseSalaryAssembler === "" ) {
+        this.errorsAssembler.baseSalary = true;
+        error = true;
+      } else {
+        this.errorsAssembler.baseSalary = false;
+      }
+      if (typeof this.inputRoles.assembler.minPercentShoes !== 'number' ||  this.inputRoles.assembler.minPercentShoes === "") {
+        this.errorsAssembler.minPercentShoes = true;
+        error = true;
+      } else {
+        this.errorsAssembler.minPercentShoes = false;
+      }
+      if (typeof this.inputRoles.assembler.maxPercentShoes !== 'number' ||  this.inputRoles.assembler.maxPercentShoes === "") {
+        this.errorsAssembler.maxPercentShoes = true;
+        error = true;
+      } else {
+        this.errorsAssembler.maxPercentShoes = false;
+      }
+      if (typeof this.inputRoles.assembler.minPercentTennis !== 'number' ||  this.inputRoles.assembler.minPercentTennis === "") {
+        this.errorsAssembler.minPercentTennis = true;
+        error = true;
+      } else {
+        this.errorsAssembler.minPercentTennis = false;
+      }
+      if (typeof this.inputRoles.assembler.maxPercentTennis !== 'number' ||  this.inputRoles.assembler.maxPercentTennis === "") {
+        this.errorsAssembler.maxPercentTennis = true;
+        error = true;
+      } else {
+        this.errorsAssembler.maxPercentTennis = false;
+      } if(typeof this.inputRoles.assembler.maxShoesQuantity !== 'number' ||  this.inputRoles.assembler.maxShoesQuantity === ""){
+         this.errorsAssembler.maxShoesQuantity = true;
+         error= true
+      }else{
+        this.errorsAssembler.maxShoesQuantity = false
+      }if(typeof this.inputRoles.assembler.maxTennisQuantity !== 'number' ||  this.inputRoles.assembler.maxTennisQuantity === ""){
+        this.errorsAssembler.maxTennisQuantity = true;
+        error = true 
+     }else{
+       this.errorsAssembler.maxTennisQuantity = false
+     }
+      return error;
+    },
+    validateInputsSeller(){
+      error = false;
+      if (typeof this.inputRoles.seller.baseSalarySeller !== 'number' ||  this.inputRoles.seller.baseSalarySeller === ""){
+        this.errorsSeller.baseSalary = true;
+        error= true
+     }
+     else{
+      this.errorsSeller.baseSalary = false
+    }
+     if (typeof this.inputRoles.seller.minComission !== 'number' ||  this.inputRoles.seller.minComission === ""){
+      this.errorsSeller.minComission = true;
+      error= true
+    }
+    else{
+      this.errorsSeller.minComission = false
+    }
+    if (typeof this.inputRoles.seller.maxComission !== 'number' ||  this.subsidy === ""){
+    this.errorsSeller.maxComission = true;
+    error= true
+ }
+ else{
+  this.errorsSeller.maxComission = false
+}
+     return error;
+    },
+  validateFormSecretary(){
+    this.validateInputsSecretary() ? this.error : this.setDataSecretary()
+  },
+  validateFormAssembler(){
+    this.validateInputsAssembler() ? this.error : this.setDataAssembler()
+  },
+  validateFormSeller(){
+    this.validateInputsSeller() ? this.error : this.setDataSeller()
+  }
+
   },
 });

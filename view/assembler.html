@@ -16,12 +16,12 @@
       <h3 class="mt-4 mb-2 text-center">Liquidación</h3>
      
       <form
-      @submit.prevent="validateLiquidation"
+      @submit.prevent="validateFormLiquidation"
       >
         <fieldset >
             <div class="mb-3">
                 <label  class=" form-label ">Nombre del trabajador</label>
-                <input v-model="fullName"  type="number "  class="form-control">  
+                <input v-model="fullName"  type="text"  class="form-control">  
                 <div>
                  <h6 class="error" v-if="errors.fullName" style="color:red" v-text="'El campo de nombre debe ser un dato válido'" ></h6>
                 </div> 
