@@ -19,7 +19,7 @@ podras clonar y/o forkear el c√≥digo haciendo uso del git clone o git fork, seg√
 ```
 
 ## Link Despliegue
-`(https://new-qt0vkr0ax-drbobby27.vercel.app/index.html)`
+(https://new-qt0vkr0ax-drbobby27.vercel.app/index.html)
 
 ## Tecnologias usadas
 `VUE/ BOOTSTRAP/ CSS`
