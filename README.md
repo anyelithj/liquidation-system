@@ -19,7 +19,7 @@ https://github.com/anyelithj/liquidation-system.git
 ```
 
 ## Link Despliegue
-
+`https://new-qt0vkr0ax-drbobby27.vercel.app/index.html`
 
 ## Tecnologias usadas
 `VUE/ BOOTSTRAP/ CSS`
