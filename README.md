@@ -9,17 +9,17 @@ App liquidation-system calcula la liquidación del personal desarrollada en VUE
 Clone el proyecto con el siguiente comando
 
 ```bash
-(https://github.com/anyelithj/liquidation-system.git)
+https://github.com/anyelithj/liquidation-system.git
 ```
 ## Clonar repositorio
 podras clonar y/o forkear el código haciendo uso del git clone o git fork, según sea el caso
 
 ```bash
-(https://github.com/anyelithj/liquidation-system.git)
+https://github.com/anyelithj/liquidation-system.git
 ```
 
 ## Link Despliegue
-(https://new-qt0vkr0ax-drbobby27.vercel.app/index.html)
+https://new-qt0vkr0ax-drbobby27.vercel.app/index.html
 
 ## Tecnologias usadas
 `VUE/ BOOTSTRAP/ CSS`
