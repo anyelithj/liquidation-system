@@ -2,9 +2,8 @@
 
 App liquidation-system calcula la liquidación del personal desarrollada en VUE
 <div align="center">
-  <img src="https://icons8.com/icon/rEUVwsj9R7SJ/retirada" width="250" height="250"/>
+  <img src="https://img.icons8.com/fluency/48/000000/withdrawal.png"/>
 </div>
-<a href="https://icons8.com/icon/rEUVwsj9R7SJ/retirada">Retirada icon by Icons8</a>
 
 ## Installation
 Clone el proyecto con el siguiente comando
