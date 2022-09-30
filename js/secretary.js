@@ -4,24 +4,38 @@
       baseSalary: "",
       extraHours: "",
       totalPay: 0,
-      errorBaseSalary: false,
       errorExtraHours: false,
-      overtimePrice: 25000,
+      errorBaseSalary: false,
       totalExtraHours: 0,
       dataSecretarys: [],
-      extraHoursMultiplier: 1,
+      extraHoursPercent: 1.8,
+      SECRETARY_STORAGE_KEY: "setSecretaryDataStorage",
+      configAdmin:{}
+    },
+    created() {
+      this.dataSecretaryStorangs = JSON.parse(localStorage.getItem("dataSecretarys") || '[]')
+      this.configAdmin = this.getParsedLocalStorage(this.SECRETARY_STORAGE_KEY)
     },
     methods: {
+      updateLocalStorage(){
+        return localStorage.setItem("dataStorang", JSON.stringify(this.dataSecretarys))
+      },
+      getParsedLocalStorage(key) {
+        return JSON.parse(localStorage.getItem(key) || "[]");
+      },
+      show(){
+        console.log(this.configAdmin)
+      },
       addSecretary() {
         this.fieldValidations() ? this.error : this.createSecretary();
       },
       createSecretary() {
         this.dataSecretarys.push({
-          baseSalarySec: this.baseSalary,
+          baseSalarySec: this.configAdmin.baseSalarySecretary,
           extraHourSec: this.extraHours,
           totalPaySec: this.calculate(),
         });
-        console.log(this.dataSecretarys);
+        this.message('¡Enhorabuena!', 2500,'center','¡La liquidación se ha generado exitosamente!')
         this.updateLocalStorage(); 
         this.clearForm();     
       },
@@ -42,33 +56,13 @@
         return thousandSeparator(value);
       },
       calculate() {
-        console.log("🚀this.extraHours >>", this.extraHours);
-        console.log("🚀this.totalExtraHours >>", this.totalExtraHours);
-        console.log("🚀this.overtimePrice  >>", this.overtimePrice);
-        console.log("🚀this.totalPay >>", this.totalPay);
+        this.baseSalary = this.configAdmin.baseSalarySecretary;
         const horaNormal = this.baseSalary / 160;
-        return this.extraHours * (horaNormal * this.extraHoursMultiplier);     
-      },
-      updateLocalStorage() {
-        localStorage.setItem("dataStorang", JSON.stringify(this.dataSecretarys));
+        return this.extraHours * (horaNormal * this.extraHoursPercent);     
       },
       fieldValidations() {
         error = false;
-        if (
-          this.baseSalary === "" ||
-          this.baseSalary <= 0 ||
-          typeof this.baseSalary !== "number"
-        ) {
-          this.errorBaseSalary = true;
-          error = true;
-        } else {
-          this.errorBaseSalary = false;
-        }
-        if (
-          this.extraHours === "" ||
-          this.extraHours <= 0 ||
-          typeof this.extraHours !== "number"
-        ) {
+        if (this.extraHours === "" || this.extraHours <= 0 || typeof this.extraHours !== "number") {
           this.errorExtraHours = true;
           error = true;
         } else {
@@ -76,52 +70,36 @@
         }
         return error;
       },
-      message(title, timer, position, text) {
-          Swal && Swal?.fire && Swal.fire({
+      message(title, timer, position, text, button) {
+        swal({
           position,
           text,
           icon: "success",
           title,
-          showConfirmButton: false,
+          dangerMode: false,
           timer,
+          button,
         });
       },
       messageDelete(index) {
-          Swal && Swal?.fire && Swal.fire({
+        swal({
           title: "¿Está seguro de eliminar?",
           text: "¡Este proceso es irreversible!",
           icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "SI",
-          cancelButtonText: "NO",
+          buttons: true,
+          dangerMode: true
         }).then((result) => {
-          if (result.isConfirmed) {
-            this.dataSecretarys.splice(index, 1);
+          if (result) {
+            this.dataSecretarys.splice(index,1);
             this.message(
               "Se eliminó correctamente",
-              3000,
+              2000,
               "center",
               "¡Los cambios fueron guardados!"
-            );
-            this.updateLocalStorage();
+            )
+            this.updateLocalStorage()
           }
-        });
-      },
-    },
-    created() {
-      const { baseSalary, extraHours } = JSON.parse(
-        localStorage.getItem("secretary")
-      );
-      this.baseSalary = baseSalary;
-      this.extraHoursMultiplier = extraHours;
-      if (localStorage.getItem("dataStorang") !== null) {
-        this.dataSecretaryStorangs = JSON.parse(
-          localStorage.getItem("dataSecretarys")
-        );
-      } else {
-        this.dataSecretaryStorangs = this.dataSecretarys;
+        })
       }
     },
   });
