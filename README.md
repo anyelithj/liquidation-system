@@ -25,8 +25,10 @@ https://github.com/anyelithj/liquidation-system.git
 `VUE/ BOOTSTRAP/ CSS`
 
 ## Back Log
-https://github.com/users/anyelithj/projects/4/views/1
+`https://github.com/users/anyelithj/projects/4/views/1`
+
 
 ## Contribuidores
-[Jorge Arley](https://github.com/drbobby27)/
-[Anyelith Jacobo](https://github.com/anyelithj)/
+`[Jorge Arley](https://github.com/drbobby27)/
+[Anyelith Jacobo](https://github.com/anyelithj)/`
+
