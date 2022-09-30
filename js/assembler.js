@@ -156,7 +156,7 @@ new Vue({
         comissionTennis: this.defineComissionTennis(baseSalaryAssembler,this.assemblyTennis,minPercentTennis,maxPercentTennis, maxTennisQuantity),
         total: this.defineTotal(baseSalaryAssembler,this.defineExtraHours(this.extraHoursQuantity, baseSalaryAssembler),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComissionShoes(baseSalaryAssembler,this.assemblyShoes,minPercentShoes,maxPercentShoes, maxShoesQuantity), this.defineComissionTennis(baseSalaryAssembler,this.assemblyTennis,minPercentTennis,maxPercentTennis, maxTennisQuantity))
       })
-
+      console.log(this.consolidationLiquidations);
       this.setLocalStorageData(this.STORAGE_KEY, this.consolidationLiquidations)
 
       this.message('¡Enhorabuena!', 2500,'center','¡La liquidación se ha generado exitosamente!')
