@@ -2,109 +2,54 @@ new Vue({
     el: '#app',
     data: {
        displayMessageError: "El campo 'X' debe ser un  dato valido",
-       CHART_JS_REFERENCE :'myChart',
-       error:false,
+       error:true,
        errors:{
        fullName: false,
        identityNumber: false,
-       baseSalary: false,
+       assemblyShoes: false,
+       assemblyTennis: false,
        extraHoursQuantity:false,
        subsidy: false,
        bonus: false,
-       comission:false,
        },
-       assemblerNormalHourValue: 5000,
        fullName: "",
        identityNumber: "",
+       assemblyShoes: "",
+       assemblyTennis: "",
        baseSalary: "",
        extraHoursQuantity:"",
        subsidy: "",
        bonus: "",
-       comission:"",
        resultLiquidation: 0,
        consolidationLiquidations: [],
        ASSEMBLER_STORAGE_KEY: "setAssemblerDataStorage",
+       STORAGE_KEY: "setAssemblerLiquidationData",
        dataFromAdmin: {}
     },
     created(){
-        this.consolidationLiquidations = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]')
-        this.dataFromAdmin = this.getParsedLocalStorage(this.ASSEMBLER_STORAGE_KEY)
+        this.consolidationLiquidations =  JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]') 
+
+        this.dataFromAdmin = this.getParsedLocalStorage(this.ASSEMBLER_STORAGE_KEY) 
       },
     methods: {
-        updateLocalStorage(){
-            return localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.consolidationLiquidations))
-          },
-          getParsedLocalStorage(key) {
+      setLocalStorageData(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+      },
+      getParsedLocalStorage(key) {
             return JSON.parse(localStorage.getItem(key) || "[]");
-          },
-          showDataFromAdmin(){
-            console.log(this.dataFromAdmin)
-          },
-        message(title,timer,position,text){
-            swal({
-              position,
-              text,
-              icon: "success",
-              title,
-              dangerMode: false,
-              timer
-            })
+      },
+      message(title,timer,position,text){
+        swal({
+          position,
+          text,
+          icon: "success",
+          title,
+          dangerMode: false,
+          timer
+      })
     },
-    validateInputs() {
-        error = false;
-      if (this.fullName === "" ) {
-        this.errors.fullName = true;
-        error = true;
-      } else {
-        this.errors.fullName = false;
-      }
-      if (this.identityNumber === "" ||  this.fullName === 'number') {
-        this.errors.identityNumber = true;
-        error = true;
-      } else {
-        this.errors.identityNumber = false;
-      }
-      if (this.baseSalary === "" || typeof this.fullName !== 'number') {
-        this.errors.baseSalary = true;
-        error = true;
-      } else {
-        this.errors.baseSalary = false;
-      }
-      if (this.extraHoursQuantity === "" || typeof this.fullName !== 'number') {
-        this.errors.extraHoursQuantity = true;
-        error = true;
-      } else {
-        this.errors.extraHoursQuantity = false;
-      }
-      if (this.subsidy === "" || typeof this.fullName !== 'number') {
-        this.errors.subsidy = true;
-        error = true;
-      } else {
-        this.errors.subsidy = false;
-      }
-      if (this.bonus == "" || typeof this.fullName !== 'number') {
-        this.errors.bonus = true;
-        error = true;
-      } else {
-        this.errors.bonus = false;
-      }if(this.comission === "" || typeof this.fullName !== 'number'){
-         this.errors.comission = true;
-      }else{
-        this.errors.comission = false
-      }
-      return error;
-    },
-    cleanInputs(){
-        this.fullName ="",
-        this.identityNumber= "",
-        this.baseSalary= "",
-        this.extraHoursQuantity= "",
-        this.subsidy= "",
-        this.bonus= "",
-        this.comission=""
-    },
-    defineExtraHours(hours){
-       return hours * (this.assemblerNormalHourValue * 2.2)
+    defineExtraHours(extraHours, salary){
+       return extraHours * ((salary/160) * 2.2)
     },
     showFormatedNumber(value){
         function thousandSeparator(number = 0, decimalsQuantity = 2) {
@@ -112,17 +57,20 @@ new Vue({
           }
           return thousandSeparator(value)
     },
-    defineComission(quantity, salary){
-        if(quantity > 1000 && quantity < 1700){
-            return  salary * .10
+    defineComissionShoes(salary, quantity,minPercent , maxPercent , maxValue ){
+        if(quantity > 1000 && quantity <= maxValue){
+            return  salary * (minPercent/100)
         }else if(quantity > 1700 && quantity < 2000){
-            return  salary * .15
-        }else  if(quantity > 2000 && quantity < 3000){
-            return salary * .20
-        }else  if(quantity > 3000){
-            return  salary * .30
-        }else  {return 0}
+            return  salary * (maxPercent/100)
+        }return 0
     },
+    defineComissionTennis(salary, quantity,minPercent , maxPercent , maxValue = 3000){
+      if(quantity > 1700 && quantity <= maxValue ){
+        return  salary * (minPercent/100)
+    }else if(quantity > maxValue){
+        return  salary * (maxPercent/100)
+    }return 0
+  },
     defineBonusPerChild(num){
         if(num === 1){
             return 80000
@@ -133,20 +81,89 @@ new Vue({
     defineTotal(...values){
         return values.reduce((a,b) => a + b)
     },
+    clearInputs() {
+       this.fullName= "",
+       this.identityNumber= "",
+       this.assemblyShoes= "",
+       this.assemblyTennis= "",
+       this.baseSalary= "",
+       this.extraHoursQuantity="",
+       this.subsidy= "",
+       this.bonus= ""
+    },
+ 
+    validateInputs() {
+      error = false;
+    if (typeof this.fullName !== 'string' || this.fullName === "" ) {
+      this.errors.fullName = true;
+      error = true;
+    } else {
+      this.errors.fullName = false;
+    }
+    if (typeof this.identityNumber !== 'number' ||  this.identityNumber === "") {
+      this.errors.identityNumber = true;
+      error = true;
+    } else {
+      this.errors.identityNumber = false;
+    }
+    if (typeof this.assemblyShoes !== 'number' ||  this.assemblyShoes === "") {
+      this.errors.assemblyShoes = true;
+      error = true;
+    } else {
+      this.errors.assemblyShoes = false;
+    }
+    if (typeof this.assemblyTennis !== 'number' ||  this.assemblyTennis === "") {
+      this.errors.assemblyTennis = true;
+      error = true;
+    } else {
+      this.errors.assemblyTennis = false;
+    }
+    if (typeof this.baseSalary !== 'number' ||  this.baseSalary === "") {
+      this.errors.baseSalary = true;
+      error = true;
+    } else {
+      this.errors.baseSalary = false;
+    }
+    if (typeof this.extraHoursQuantity !== 'number' ||  this.extraHoursQuantity === "") {
+      this.errors.extraHoursQuantity = true;
+      error = true;
+    } else {
+      this.errors.extraHoursQuantity = false;
+    }if(typeof this.subsidy !== 'number' ||  this.subsidy === ""){
+       this.errors.subsidy = true;
+    }else{
+      this.errors.subsidy = false
+    }if(typeof this.bonus !== 'number' ||  this.bonus === ""){
+      this.errors.bonus = true;
+   }else{
+     this.errors.bonus = false
+   }
+    return error;
+  },
     calculateLiquidation() {
-        this.message('¡Enhorabuena!', 2500,'center','¡La liquidación se ha generado exitosamente!')
-        this.consolidationLiquidations.push({
-            fullName: this.fullName,
-            identityNumber: this.identityNumber,
-            baseSalary: this.baseSalary,
-            extraHoursQuantity: this.defineExtraHours(this.extraHoursQuantity),
-            subsidy:this.subsidy,
-            bonus: this.defineBonusPerChild(this.bonus),
-            comission: this.defineComission(this.comission, this.baseSalary),
-            total: this.defineTotal(this.baseSalary,this.defineExtraHours(this.extraHoursQuantity),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComission(this.comission, this.baseSalary))
-        })
-        this.updateLocalStorage()
-        this.cleanInputs()
+       const  {baseSalaryAssembler,minPercentShoes,minPercentTennis,maxTennisQuantity ,maxShoesQuantity, maxPercentTennis, maxPercentShoes
+       } =  this.dataFromAdmin
+
+       this.consolidationLiquidations.push({
+        fullName: this.fullName,
+        identityNumber: this.identityNumber,
+        baseSalary: baseSalaryAssembler,
+        extraHoursQuantity: this.defineExtraHours(this.extraHoursQuantity,baseSalaryAssembler),
+        subsidy:this.subsidy,
+        bonus: this.defineBonusPerChild(this.bonus),
+        comissionShoes: this.defineComissionShoes(baseSalaryAssembler,this.assemblyShoes,minPercentShoes,maxPercentShoes, maxShoesQuantity ),
+
+        comissionTennis: this.defineComissionTennis(baseSalaryAssembler,this.assemblyTennis,minPercentTennis,maxPercentTennis, maxTennisQuantity),
+        total: this.defineTotal(baseSalaryAssembler,this.defineExtraHours(this.extraHoursQuantity, baseSalaryAssembler),this.subsidy,this.defineBonusPerChild(this.bonus),this.defineComissionShoes(baseSalaryAssembler,this.assemblyShoes,minPercentShoes,maxPercentShoes, maxShoesQuantity), this.defineComissionTennis(baseSalaryAssembler,this.assemblyTennis,minPercentTennis,maxPercentTennis, maxTennisQuantity))
+      })
+
+      this.setLocalStorageData(this.STORAGE_KEY, this.consolidationLiquidations)
+
+      this.message('¡Enhorabuena!', 2500,'center','¡La liquidación se ha generado exitosamente!')
+      this.clearInputs()
+    },
+    validateLiquidation(){
+      this.validateInputs() ? this.error : this.calculateLiquidation()
     },
     deleteAlert(item) {
         swal({
@@ -164,9 +181,7 @@ new Vue({
                 "center",
                 "¡Los cambios fueron guardados!"
               )
-              this.updateLocalStorage()
-            }else{
-
+              this.setLocalStorageData(this.STORAGE_KEY, this.consolidationLiquidations)
             }
           })
     }

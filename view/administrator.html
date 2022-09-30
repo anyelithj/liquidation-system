@@ -13,12 +13,11 @@
   </head>
   <body>
     <div id="app" class="container">
-      <h3 class="mt-4 mb-2 text-danger text-center">Editar valores según el cargo</h3>
+      <h3 class="mt-4 mb-2  text-center">Editar valores según el cargo</h3>
 
-      <button @click="showData" class="btn btn-danger">show</button>
       
       <div class="row d-flex justify-content-start">
-        <label  class="col-4 rounded-1 text-center" >Roles</label>
+        <label  class="col-4 rounded-1 text-center" >Roles: </label>
         <select class="col-4 rounded-1 text-center bg-light"
           v-model="defaultRol"
          
@@ -117,15 +116,7 @@
             </div>  
           </div>
 
-          <div class="mb-3">
-            <label class="form-label ">Porcentaje horas extras</label>
-            <input placeholder="Ejemplo: 10 para representar la decima parte" v-model.number="inputRoles.secretary.extraHoursPercent" type="text " class="form-control"
-            v-text="inputRoles.secretary.extraHoursPercent"
-            >
-            <div>
-             <h6 class="error" v-if="errorsSecretary.extraHoursPercent" style="color:red" v-text="'wkjhgiugb'" ></h6>
-             </div> 
-          </div>
+         
 
           <span class="d-flex justify-content-center " >
             <button  class=" btn shadow btn-primary ">Guardar</button>
@@ -166,9 +157,7 @@
           </span>
         </fieldset>
       </form>
-
       <h4 v-else > Seleccione el cargo que desea modificar.</h4>
-  
     </div>
     </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

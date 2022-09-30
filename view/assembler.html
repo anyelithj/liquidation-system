@@ -13,61 +13,65 @@
   </head>
   <body>
     <div id="app" class="container">
-      <h3 class="mt-4 mb-2 text-danger text-center">Liquidación</h3>
-      <button class="btn btn-danger "  @click="showDataFromAdmin" >show</button>
+      <h3 class="mt-4 mb-2 text-center">Liquidación</h3>
+     
       <form
-      @submit.prevent="calculateLiquidation"
+      @submit.prevent="validateLiquidation"
       >
         <fieldset >
             <div class="mb-3">
                 <label  class=" form-label ">Nombre del trabajador</label>
-                <input v-model="fullName"  type="text " class="form-control">  
+                <input v-model="fullName"  type="number "  class="form-control">  
                 <div>
-                 <h6 class="error" v-if="errors.fullName" style="color:red" v-text="'wkjhgiugb'" ></h6>
+                 <h6 class="error" v-if="errors.fullName" style="color:red" v-text="'El campo de nombre debe ser un dato válido'" ></h6>
                 </div> 
             </div>
               <div class="mb-3">
                 <label class="form-label ">Número de cédula</label>
-                <input v-model.number="identityNumber" type="text " class="form-control">
+                <input v-model.number="identityNumber" type="number "  class="form-control">
                 <div>
-                 <h6 class="error" v-if="errors.identityNumber" style="color:red" v-text="'wkjhgiugb'" ></h6>
+                 <h6 class="error" v-if="errors.identityNumber" style="color:red" v-text="'El campo de cédula debe ser un dato válido'" ></h6>
                 </div> 
               </div>
-          <div class="mb-3">
-            <label  class=" form-label ">Salario base</label>
-            <input v-model.number="baseSalary"  type="text " class="form-control">  
-            <div>
-            <h6 class="error" v-if="errors.baseSalary" style="color:red" v-text="'wkjhgiugb'" ></h6>
-            </div>  
-          </div>
+
+              <div class="mb-3">
+                <label class="form-label ">Zapatos ensamblados</label>
+                <input v-model.number="assemblyShoes" type="number "  class="form-control">
+                <div>
+                 <h6 class="error" v-if="errors.assemblyShoes" style="color:red" v-text="'El campo de nombre debe ser un dato valido'" ></h6>
+                 </div> 
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label ">Zapatillas ensambladas</label>
+                <input v-model.number="assemblyTennis" type="number "  class="form-control">
+                <div>
+                 <h6 class="error" v-if="errors.assemblyTennis" style="color:red" v-text="'El campo de zapatillas debe ser un dato válido'" ></h6>
+                 </div> 
+              </div>
+         
           <div class="mb-3">
             <label class="form-label ">Número de horas extras</label>
-            <input v-model.number="extraHoursQuantity" type="text " class="form-control">
+            <input v-model.number="extraHoursQuantity" type="number "  class="form-control">
             <div>
-             <h6 class="error" v-if="errors.extraHoursQuantity" style="color:red" v-text="'wkjhgiugb'" ></h6>
+             <h6 class="error" v-if="errors.extraHoursQuantity" style="color:red" v-text="'El campo de horas extras debe ser un dato válido'" ></h6>
              </div> 
           </div>
           <div class="mb-3">
             <label  class=" form-label ">Valor del subsidio</label>
-            <input v-model.number="subsidy" type="text " class="form-control">  
+            <input v-model.number="subsidy" type="number "  class="form-control">  
             <div>
-                <h6 class="error" v-if="errors.subsidy" style="color:red" v-text="'wkjhgiugb'" ></h6>
+                <h6 class="error" v-if="errors.subsidy" style="color:red" v-text="'El campo de subsidio debe ser un dato válido'" ></h6>
             </div>  
           </div>
           <div class="mb-3">
             <label  class=" form-label ">Número de hijos</label>
-            <input v-model.number="bonus" type="text " class="form-control"> 
+            <input v-model.number="bonus" type="number "  class="form-control"> 
             <div>
-                <h6 class="error" v-if="errors.bonus" style="color:red" v-text="'wkjhgiugb'" ></h6>
+                <h6 class="error" v-if="errors.bonus" style="color:red" v-text="'El campo de bono debe ser un dato válido'" ></h6>
             </div>   
           </div>
-          <div class="mb-3">
-            <label class="form-label ">Número de zapatillas vendidas (comisión)</label>
-            <input v-model.number="comission" type="text " class="form-control">
-            <div>
-                <h6 class="error" v-if="errors.comission" style="color:red" v-text="'wkjhgiugb'" ></h6>
-            </div> 
-          </div>
+          
           <span class="d-flex justify-content-center " >
             <button  class=" btn shadow btn-danger ">Calcular</button>
           </span>
@@ -87,7 +91,8 @@
             <th scope="col">Horas extras</th>
             <th scope="col">Subsidio</th>
             <th scope="col">Bono</th>
-            <th scope="col">Comisión</th>
+            <th scope="col">Comisión Zapatos</th>
+            <th scope="col">Comisión Tenis</th>
             <th scope="col">Total</th>
             <th scope="col">Eliminar</th>
           </tr>
@@ -105,7 +110,8 @@
             <td   v-text="showFormatedNumber(item?.extraHoursQuantity)"></td>
             <td   v-text="showFormatedNumber(item?.subsidy)"></td>
             <td   v-text="showFormatedNumber(item?.bonus)" ></td>
-            <td   v-text="showFormatedNumber(item?.comission)" ></td>
+            <td   v-text="showFormatedNumber(item?.comissionShoes)" ></td>
+            <td   v-text="showFormatedNumber(item?.comissionTennis)" ></td>
             <td   v-text="showFormatedNumber(item?.total)" ></td>
             <td>
                 <button  class="shadow btn btn-danger btn-sm " @click="deleteAlert(item)">X</button>

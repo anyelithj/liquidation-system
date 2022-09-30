@@ -20,7 +20,6 @@ new Vue({
     },
     errorsSecretary: {
       baseSalary: false,
-      extraHoursPercent: false,
     },
     inputRoles: {
       assembler: {
@@ -34,7 +33,6 @@ new Vue({
       },
       secretary: {
         baseSalarySecretary:"",
-        extraHoursPercent:"",
       },
       seller: {
         baseSalarySeller:"",
@@ -59,9 +57,7 @@ new Vue({
 
   },
   methods: {
-    showData() {
-      console.log(this.wholeParsedData);
-    },
+
     setLocalStorageData(key, data) {
       localStorage.setItem(key, JSON.stringify(data));
     },
@@ -82,11 +78,9 @@ new Vue({
         return salary * 0.3;
       } else return 0;
     },
-
     setDataSecretary() {
       this.Secretary = {
         baseSalarySecretary: this.inputRoles.secretary?.baseSalarySecretary,
-        extraHours: this.inputRoles.secretary?.extraHoursPercent / 100,
       };
       this.setLocalStorageData(this.SECRETARY_STORAGE_KEY, this.Secretary)
       
@@ -97,8 +91,7 @@ new Vue({
         "¡Los cambios fueron guardados correctamente!",
         false
       );
-      this.inputRoles.secretary.baseSalary = "";
-      this.inputRoles.secretary.extraHoursPercent = "";
+      this.inputRoles.secretary.baseSalarySecretary = "";
     },
 
     setDataAssembler() {
@@ -120,7 +113,7 @@ new Vue({
         "¡Los cambios fueron guardados correctamente!",
         false
       );
-      this.inputRoles.assembler.baseSalary = "";
+      this.inputRoles.assembler.baseSalaryAssembler = "";
       this.inputRoles.assembler.minPercentShoes = "";
       this.inputRoles.assembler.maxPercentShoes = "";
       this.inputRoles.assembler.minPercentTennis = "";
@@ -143,7 +136,7 @@ new Vue({
         "¡Los cambios fueron guardados correctamente!",
         false
       );
-      this.inputRoles.seller.baseSalary = "";
+      this.inputRoles.seller.baseSalarySeller = "";
       this.inputRoles.seller.minComission = "";
       this.inputRoles.seller.maxComission = "";
     },
@@ -158,50 +151,20 @@ new Vue({
         button,
       });
     },
-    validateInputs() {
-      error = false;
-      if (this.fullName === "") {
-        this.errors.fullName = true;
-        error = true;
-      } else {
-        this.errors.fullName = false;
-      }
-      if (this.identityNumber === "" || typeof this.fullName !== "number") {
-        this.errors.identityNumber = true;
-        error = true;
-      } else {
-        this.errors.identityNumber = false;
-      }
-      if (this.baseSalary === "" || typeof this.fullName !== "number") {
-        this.errors.baseSalary = true;
-        error = true;
-      } else {
-        this.errors.baseSalary = false;
-      }
-      if (this.extraHoursQuantity === "" || typeof this.fullName !== "number") {
-        this.errors.extraHoursQuantity = true;
-        error = true;
-      } else {
-        this.errors.extraHoursQuantity = false;
-      }
-      if (this.subsidy === "" || typeof this.fullName !== "number") {
-        this.errors.subsidy = true;
-        error = true;
-      } else {
-        this.errors.subsidy = false;
-      }
-      if (this.bonus == "" || typeof this.fullName !== "number") {
-        this.errors.bonus = true;
-        error = true;
-      } else {
-        this.errors.bonus = false;
-      }
-      if (this.comission === "" || typeof this.fullName !== "number") {
-        this.errors.comission = true;
-      } else {
-        this.errors.comission = false;
-      }
-      return error;
+    validateInputsRolSecretary(input) {
+      if(input === "") 
+      return this.errorsSecretary = true
+      return
+    },
+    validateInputsRolAssembler(input) {
+      if(input === "") 
+      return this.errorsSecretary = true
+      return
+    },
+    validateInputsRolSeller(input) {
+      if(input === "") 
+      return this.errorsSecretary = true
+      return
     },
     showFormatedNumber(value) {
       function thousandSeparator(number = 0, decimalsQuantity = 2) {
