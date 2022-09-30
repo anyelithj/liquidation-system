@@ -12,20 +12,35 @@ new Vue( {
         errorExtraHours: false,
         errorTotalSales: false,
         errorTransportSubsidy: false,
-        dataSellers: []
+        dataSellers: [],
+        SELLER_STORAGE_KEY: "setSellerDataStorage",
+        configAdmin:{}
+    },
+    created() {
+        this.dataSellerStorangs = JSON.parse(localStorage.getItem("dataSellers") || '[]')
+        this.configAdmin = this.getParsedLocalStorage(this.SELLER_STORAGE_KEY)
     },
     methods: {
+        updateLocalStorage() {
+            localStorage.setItem("dataStorang", JSON.stringify(this.dataSellers))
+        },
+        getParsedLocalStorage(key) {
+          return JSON.parse(localStorage.getItem(key) || "[]");
+        },
+        show(){
+          console.log(this.configAdmin)
+        },
         addSeller(){
           this.fieldValidations() ? this.error : this.createrSeller()  
         },
         createrSeller() {
             this.dataSellers.push({
-                baseSalarySel: this.baseSalary,
+                baseSalarySel: this.configAdmin.baseSalarySeller,
                 totalSalesSel: this.totalSales,
                 transportSubsidySel: this.transportSubsidy,
                 totalPaySel: this.calculate()
             })
-            console.log(this.dataSellers)
+            this.message('¡Enhorabuena!', 2500,'center','¡La liquidación se ha generado exitosamente!')
             this.updateLocalStorage()
             this.clearForm()
         },
@@ -40,21 +55,12 @@ new Vue( {
               return thousandSeparator(value)
         },
         calculate() {
-            this.totalCommission = (this.totalSales >= 5000000)? this.totalSales * 0.10 : (this.totalSales >= 10000000) ? this.totalSales * 0.20 : 0;
-           return this.totalPay = this.baseSalary + this.totalCommission + this.transportSubsidy;
-           console.log(this.totalPay)
+          this.baseSalary = this.configAdmin.baseSalarySeller;
+          this.totalCommission = (this.totalSales >= 5000000)? this.totalSales * 0.10 : (this.totalSales >= 10000000) ? this.totalSales * 0.20 : 0;
+          return this.totalPay = this.baseSalary + this.totalCommission + this.transportSubsidy;
         },        
-        updateLocalStorage() {
-            localStorage.setItem("dataStorang", JSON.stringify(this.dataSellers))
-        },
         fieldValidations(){
             error = false;
-            if(this.baseSalary === "" || this.baseSalary <= 0 || typeof this.baseSalary !== "number"){
-              this.errorBaseSalary = true;
-              error = true;
-            } else {
-              this.errorBaseSalary = false;
-            }
             if(this.totalSales === "" || this.totalSales < 0 || typeof this.totalSales  !== "number") {
                 this.errorTotalSales = true;
                 error = true;
@@ -63,44 +69,37 @@ new Vue( {
             }
             return error;
         },
-        message(title,timer,position,text){
-            Swal.fire({
+        message(title, timer, position, text, button) {
+            swal({
               position,
               text,
               icon: "success",
               title,
-              showConfirmButton: false,
-              timer
-        })},
+              dangerMode: false,
+              timer,
+              button,
+            });
+        },
         messageDelete(index) {
-            Swal.fire({
-                title: "¿Está seguro de eliminar?",
-                text: "¡Este proceso es irreversible!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "SI",
-                cancelButtonText: "NO",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.dataSellers.splice(index,1);
-                  this.message(
-                    "Se eliminó correctamente",
-                    3000,
-                    "center",
-                    "¡Los cambios fueron guardados!"
-                  );
-                  this.updateLocalStorage();
-                }
-              });
+            swal({
+              title: "¿Está seguro de eliminar?",
+              text: "¡Este proceso es irreversible!",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true
+            }).then((result) => {
+              if (result) {
+                this.dataSellers.splice(index,1);
+                this.message(
+                  "Se eliminó correctamente",
+                  2000,
+                  "center",
+                  "¡Los cambios fueron guardados!"
+                )
+                this.updateLocalStorage()
+              }
+            })
         }
     },
-    created() {
-        if(localStorage.getItem("dataStorang") !== null) {
-            this.dataSellerStorangs = JSON.parse(localStorage.getItem("dataSellers"))
-        } else {
-            this.dataSellerStorangs = this.dataSellers
-        }
-    }
+ 
 })

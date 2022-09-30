@@ -8,7 +8,7 @@ new Vue({
       { position: "administrador", pin: "123456" },
       { position: "secretario", pin: "12345678" },
       { position: "vendedor", pin: "87654321" },
-      { position: "ensamblador", pin: "522376" },
+      { position: "ensamblador", pin: "12345" },
       { position: "ensamblador", pin: "56789" },
       { position: "secretario", pin: "123" },
     ],
