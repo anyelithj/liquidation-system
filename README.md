@@ -2,7 +2,7 @@
 
 App liquidation-system calcula la liquidación del personal desarrollada en VUE
 <div align="center">
-  <img src="https://img.icons8.com/fluency/96/000000/withdrawal.png"/>
+  <img src="[https://img.icons8.com/fluency/96/000000/withdrawal.png](https://thumbs.gfycat.com/SoftEarnestGyrfalcon-max-1mb.gif)"/>
 </div>
 
 ## Installation
